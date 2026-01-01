@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROPIXEL Admin Panel - RAGEMP Server Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="assets/logo.svg" alt="ROPIXEL Logo">
+            <h1>ROPIXEL</h1>
+        </div>
+        <nav class="menu">
+            <a href="#dashboard" class="menu-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#players" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Players</span>
+            </a>
+            <a href="#vehicles" class="menu-item">
+                <i class="fas fa-car"></i>
+                <span>Vehicles</span>
+            </a>
+            <a href="#economy" class="menu-item">
+                <i class="fas fa-coins"></i>
+                <span>Economy</span>
+            </a>
+            <a href="#jobs" class="menu-item">
+                <i class="fas fa-briefcase"></i>
+                <span>Jobs</span>
+            </a>
+            <a href="#factions" class="menu-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Factions</span>
+            </a>
+            <a href="#properties" class="menu-item">
+                <i class="fas fa-building"></i>
+                <span>Properties</span>
+            </a>
+            <a href="#logs" class="menu-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Logs</span>
+            </a>
+            <a href="#settings" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search players, vehicles, properties...">
+            </div>
+            <div class="header-right">
+                <div class="server-status">
+                    <span class="status-indicator online"></span>
+                    <span>Server Online: 145/200</span>
+                </div>
+                <div class="admin-profile">
+                    <img src="assets/admin-avatar.svg" alt="Admin">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <section id="dashboard" class="content-section active">
+            <h2>Server Overview</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon players">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>145</h3>
+                        <p>Online Players</p>
+                        <span class="stat-change positive">+12%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon economy">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>$1.2M</h3>
+                        <p>Total Economy</p>
+                        <span class="stat-change positive">+8%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon vehicles">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>856</h3>
+                        <p>Active Vehicles</p>
+                        <span class="stat-change neutral">0%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon uptime">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>99.9%</h3>
+                        <p>Server Uptime</p>
+                        <span class="stat-change positive">+0.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-row">
+                <div class="chart-container">
+                    <h3>Player Activity (Last 7 Days)</h3>
+                    <canvas id="playerChart"></canvas>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Actions</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <i class="fas fa-user-plus"></i>
+                            <div class="activity-content">
+                                <p><strong>John_Doe</strong> joined the server</p>
+                                <span class="activity-time">2 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-car"></i>
+                            <div class="activity-content">
+                                <p><strong>Mike_Smith</strong> purchased Infernus</p>
+                                <span class="activity-time">5 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-building"></i>
+                            <div class="activity-content">
+                                <p><strong>Sarah_Jones</strong> bought a house</p>
+                                <span class="activity-time">12 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-ban"></i>
+                            <div class="activity-content">
+                                <p><strong>Hacker123</strong> was banned</p>
+                                <span class="activity-time">15 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-star"></i>
+                            <div class="activity-content">
+                                <p><strong>Alex_Brown</strong> reached level 50</p>
+                                <span class="activity-time">20 minutes ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="action-btn restart">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Restart Server</span>
+                    </button>
+                    <button class="action-btn announce">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Send Announcement</span>
+                    </button>
+                    <button class="action-btn backup">
+                        <i class="fas fa-database"></i>
+                        <span>Backup Database</span>
+                    </button>
+                    <button class="action-btn maintenance">
+                        <i class="fas fa-wrench"></i>
+                        <span>Maintenance Mode</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Players Section -->
+        <section id="players" class="content-section">
+            <h2>Player Management</h2>
+            <div class="table-container">
+                <div class="table-header">
+                    <button class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Player
+                    </button>
+                    <div class="table-filters">
+                        <input type="text" placeholder="Search players..." class="search-input">
+                        <select class="filter-select">
+                            <option>All Players</option>
+                            <option>Online</option>
+                            <option>Offline</option>
+                            <option>Banned</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Level</th>
+                            <th>Money</th>
+                            <th>Playtime</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>John_Doe</td>
+                            <td>45</td>
+                            <td>$125,000</td>
+                            <td>245h</td>
+                            <td><span class="badge online">Online</span></td>
+                            <td>
+                                <button class="icon-btn"><i class="fas fa-edit"></i></button>
+                                <button class="icon-btn"><i class="fas fa-ban"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
