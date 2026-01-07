@@ -1,168 +1,83 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Rhythm Neon Dash</title>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PureStream - No Ads</title>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        #overlay {
-            position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: #00f2ff; z-index: 20; text-align: center;
-        }
-        button {
-            padding: 15px 30px; font-size: 20px; background: #ff007f; border: none;
-            color: white; cursor: pointer; border-radius: 5px; box-shadow: 0 0 15px #ff007f;
-        }
-        select { padding: 10px; margin-bottom: 20px; background: #111; color: white; border: 1px solid #00f2ff; }
+        body { font-family: sans-serif; background: #121212; color: white; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        #search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 12px; border-radius: 5px; border: none; }
+        button { padding: 12px 20px; cursor: pointer; background: #ff0000; color: white; border: none; border-radius: 5px; }
+        .video-card { display: flex; gap: 15px; margin-bottom: 15px; background: #1e1e1e; padding: 10px; border-radius: 8px; cursor: pointer; }
+        .video-card img { width: 120px; border-radius: 5px; }
+        #player-container { position: sticky; top: 0; background: #121212; padding-bottom: 20px; display: none; }
+        video { width: 100%; border-radius: 10px; background: #000; }
     </style>
 </head>
 <body>
 
-    <div id="overlay">
-        <h1>AI NEON RHYTHM</h1>
-        <p>Alege genul muzical:</p>
-        <select id="genre">
-            <option value="techno">Techno / Pop (Rapid)</option>
-            <option value="rock">Rock (Energic)</option>
-            <option value="hiphop">Hip-Hop (Chill)</option>
-        </select>
-        <button onclick="startApp()">START GAME</button>
+<div class="container">
+    <h2>PureStream</h2>
+    
+    <div id="player-container">
+        <video id="main-player" controls playsinline autocomplete="off"></video>
+        <h3 id="playing-title"></h3>
     </div>
 
-    <script>
-        let gameStarted = false;
-        let player, obstacles, particles, scoreText;
-        let bpm = 128;
+    <div id="search-box">
+        <input type="text" id="query" placeholder="Search for songs or videos...">
+        <button onclick="search()">Search</button>
+    </div>
 
-        // Configurația Jocului
-        const config = {
-            type: Phaser.AUTO,
-            width: window.innerWidth,
-            height: window.innerHeight,
-            backgroundColor: '#050515',
-            physics: { default: 'arcade', arcade: { gravity: { y: 1500 }, debug: false } },
-            scene: { preload: preload, create: create, update: update }
-        };
+    <div id="results"></div>
+</div>
 
-        const game = new Phaser.Game(config);
+<script>
+    const instance = "https://invidious.nerdvpn.de"; // Public Invidious Instance
 
-        function preload() {
-            // Generare asset-uri neon
-            let graphics = this.make.graphics({x: 0, y: 0, add: false});
-            
-            // Jucător
-            graphics.lineStyle(3, 0x00f2ff);
-            graphics.strokeRect(0, 0, 40, 40);
-            graphics.generateTexture('player', 40, 40);
-            
-            // Obstacol
-            graphics.clear();
-            graphics.lineStyle(3, 0xff007f);
-            graphics.strokeTriangle(20, 0, 0, 40, 40, 40);
-            graphics.generateTexture('spike', 40, 40);
+    async function search() {
+        const query = document.getElementById('query').value;
+        const response = await fetch(`${instance}/api/v1/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
 
-            // Particule
-            graphics.clear();
-            graphics.fillStyle(0x00f2ff, 1);
-            graphics.fillRect(0, 0, 4, 4);
-            graphics.generateTexture('particle', 4, 4);
-        }
-
-        function create() {
-            const self = this;
-            
-            // Background Grid
-            this.grid = this.add.grid(window.innerWidth/2, window.innerHeight/2, window.innerWidth*2, window.innerHeight*2, 50, 50, 0x00f2ff, 0.05, 0x00f2ff, 0.1);
-
-            // Jucător
-            player = this.physics.add.sprite(200, 400, 'player');
-            player.setCollideWorldBounds(true);
-
-            // Podea invizibilă
-            let ground = this.add.rectangle(window.innerWidth/2, window.innerHeight - 50, window.innerWidth, 20, 0x00f2ff, 0.3);
-            this.physics.add.existing(ground, true);
-
-            obstacles = this.physics.add.group();
-            
-            // Particule pentru săritură
-            particles = this.add.particles(0, 0, 'particle', {
-                speed: 100, scale: { start: 1, end: 0 }, alpha: { start: 1, end: 0 }, lifespan: 500, sprinkling: true, emitting: false
-            });
-
-            // Coliziuni
-            this.physics.add.collider(player, ground);
-            this.physics.add.collider(player, obstacles, () => {
-                this.cameras.main.shake(200, 0.05);
-                player.setTint(0xff0000);
-                setTimeout(() => location.reload(), 500);
-            });
-
-            // Input
-            this.input.on('pointerdown', jump);
-            this.input.keyboard.on('keydown-SPACE', jump);
-
-            scoreText = this.add.text(20, 20, 'Score: 0', { fontSize: '32px', fill: '#00f2ff' });
-        }
-
-        function update() {
-            if (!gameStarted) return;
-            this.grid.x -= 2; // Mișcare fundal
-            if (this.grid.x < 0) this.grid.x = window.innerWidth/2;
-            
-            obstacles.children.iterate(child => {
-                if (child && child.x < -50) child.destroy();
-            });
-        }
-
-        function jump() {
-            if (player.body.touching.down) {
-                player.setVelocityY(-600);
-                particles.emitParticleAt(player.x, player.y + 20, 10);
+        data.forEach(video => {
+            if (video.type === 'video') {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <img src="${video.videoThumbnails[0].url}">
+                    <div>
+                        <strong>${video.title}</strong>
+                        <p style="font-size: 0.8em; color: #aaa;">${video.author}</p>
+                    </div>
+                `;
+                card.onclick = () => playVideo(video.videoId, video.title);
+                resultsDiv.appendChild(card);
             }
-        }
+        });
+    }
 
-        // --- LOGICA AUDIO AI (TONE.JS) ---
-        function startApp() {
-            document.getElementById('overlay').style.display = 'none';
-            gameStarted = true;
-            
-            const genre = document.getElementById('genre').value;
-            if(genre === 'rock') bpm = 140;
-            else if(genre === 'hiphop') bpm = 90;
-            else bpm = 128;
+    function playVideo(id, title) {
+        const playerContainer = document.getElementById('player-container');
+        const player = document.getElementById('main-player');
+        const titleLabel = document.getElementById('playing-title');
 
-            Tone.start();
-            Tone.Transport.bpm.value = bpm;
+        playerContainer.style.display = 'block';
+        titleLabel.innerText = title;
+        
+        // This points to the direct video stream provided by the instance
+        player.src = `${instance}/latest_version?id=${id}&itag=18`; 
+        player.play();
+        
+        window.scrollTo(0, 0);
+    }
+</script>
 
-            // Sintetizator pentru Beat
-            const drum = new Tone.MembraneSynth().toDestination();
-            const hihat = new Tone.NoiseSynth({ volume: -10 }).toDestination();
-
-            // Bucla principală care generează obstacole pe ritm
-            Tone.Transport.scheduleRepeat((time) => {
-                drum.triggerAttackRelease("C1", "8n", time);
-                
-                // Generăm obstacol DOAR pe anumite bătăi pentru a fi jucabil
-                Tone.Draw.schedule(() => {
-                    spawnObstacle();
-                    // Efect vizual de puls pe fundal
-                    game.scene.scenes[0].cameras.main.flash(100, 0, 242, 255, 0.05);
-                }, time);
-
-            }, "2n"); // "2n" înseamnă la fiecare 2 bătăi (half note)
-
-            Tone.Transport.start();
-        }
-
-        function spawnObstacle() {
-            if (!gameStarted) return;
-            let obs = obstacles.create(window.innerWidth + 50, window.innerHeight - 90, 'spike');
-            obs.setVelocityX(-400 - (bpm * 0.5)); // Viteza crește cu BPM-ul
-            obs.body.allowGravity = false;
-        }
-    </script>
 </body>
 </html>
+
