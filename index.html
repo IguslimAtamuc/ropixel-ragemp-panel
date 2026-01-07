@@ -3,60 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PureStream - No Ads</title>
+    <title>PureStream - Background Play</title>
     <style>
         body { font-family: sans-serif; background: #121212; color: white; margin: 0; padding: 20px; }
         .container { max-width: 800px; margin: auto; }
+        #status { font-size: 0.8em; color: #00ff00; margin-bottom: 10px; opacity: 0.8; }
         #search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 12px; border-radius: 5px; border: none; }
-        button { padding: 12px 20px; cursor: pointer; background: #ff0000; color: white; border: none; border-radius: 5px; }
-        .video-card { display: flex; gap: 15px; margin-bottom: 15px; background: #1e1e1e; padding: 10px; border-radius: 8px; cursor: pointer; }
-        .video-card img { width: 120px; border-radius: 5px; }
-        #player-container { position: sticky; top: 0; background: #121212; padding-bottom: 20px; display: none; }
-        video { width: 100%; border-radius: 10px; background: #000; }
+        input { flex: 1; padding: 12px; border-radius: 5px; border: none; outline: none; background: #222; color: white; }
+        button { padding: 12px 20px; cursor: pointer; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; }
+        .video-card { display: flex; gap: 15px; margin-bottom: 15px; background: #1e1e1e; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .video-card:hover { background: #2a2a2a; }
+        .video-card img { width: 120px; border-radius: 5px; object-fit: cover; }
+        #player-container { position: sticky; top: 0; background: #121212; padding: 10px 0 20px 0; display: none; z-index: 100; }
+        video { width: 100%; border-radius: 10px; background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .loading { text-align: center; color: #aaa; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>PureStream</h2>
+    <div id="status">Checking connection...</div>
     
     <div id="player-container">
-        <video id="main-player" controls playsinline autocomplete="off"></video>
-        <h3 id="playing-title"></h3>
+        <video id="main-player" controls playsinline></video>
+        <h3 id="playing-title" style="font-size: 1.1em; margin-top: 10px;"></h3>
     </div>
 
     <div id="search-box">
-        <input type="text" id="query" placeholder="Search for songs or videos...">
-        <button onclick="search()">Search</button>
+        <input type="text" id="query" placeholder="Search for songs (e.g. 50 Cent)...">
+        <button id="search-btn" onclick="search()">Search</button>
     </div>
 
     <div id="results"></div>
 </div>
 
 <script>
-    const instance = "https://invidious.nerdvpn.de"; // Public Invidious Instance
+    // List of multiple backup servers
+    const instances = [
+        "https://inv.nadeko.net",
+        "https://invidious.no-logs.com",
+        "https://iv.ggtyler.dev",
+        "https://invidious.projectsegfau.lt"
+    ];
+
+    let currentInstanceIndex = 0;
+
+    function updateStatus() {
+        const statusDiv = document.getElementById('status');
+        statusDiv.innerText = `Connected to: ${instances[currentInstanceIndex].split('//')[1]}`;
+    }
 
     async function search() {
         const query = document.getElementById('query').value;
-        const response = await fetch(`${instance}/api/v1/search?q=${encodeURIComponent(query)}`);
-        const data = await response.json();
-        
+        const resultsDiv = document.getElementById('results');
+        const btn = document.getElementById('search-btn');
+
+        if (!query) return;
+
+        btn.innerText = "Wait...";
+        resultsDiv.innerHTML = '<div class="loading">Searching secure servers...</div>';
+
+        try {
+            const currentInstance = instances[currentInstanceIndex];
+            // Fetching search results from the active instance
+            const response = await fetch(`${currentInstance}/api/v1/search?q=${encodeURIComponent(query)}`);
+            
+            if (!response.ok) throw new Error("Server error");
+
+            const data = await response.json();
+            renderResults(data);
+            updateStatus();
+            btn.innerText = "Search";
+
+        } catch (error) {
+            console.warn(`Instance ${instances[currentInstanceIndex]} failed. Trying next...`);
+            // Rotate to next instance and retry
+            currentInstanceIndex = (currentInstanceIndex + 1) % instances.length;
+            if (currentInstanceIndex === 0) {
+                resultsDiv.innerHTML = '<div style="color:red">All servers are currently busy. Please try again in a minute.</div>';
+                btn.innerText = "Search";
+            } else {
+                search(); 
+            }
+        }
+    }
+
+    function renderResults(data) {
         const resultsDiv = document.getElementById('results');
         resultsDiv.innerHTML = '';
 
-        data.forEach(video => {
-            if (video.type === 'video') {
+        data.forEach(item => {
+            if (item.type === 'video') {
                 const card = document.createElement('div');
                 card.className = 'video-card';
                 card.innerHTML = `
-                    <img src="${video.videoThumbnails[0].url}">
+                    <img src="${item.videoThumbnails[0].url}" onerror="this.src='https://via.placeholder.com/120x90?text=No+Thumb'">
                     <div>
-                        <strong>${video.title}</strong>
-                        <p style="font-size: 0.8em; color: #aaa;">${video.author}</p>
+                        <strong>${item.title}</strong>
+                        <p style="font-size: 0.8em; color: #aaa;">${item.author}</p>
                     </div>
                 `;
-                card.onclick = () => playVideo(video.videoId, video.title);
+                card.onclick = () => playVideo(item.videoId, item.title);
                 resultsDiv.appendChild(card);
             }
         });
@@ -66,16 +114,20 @@
         const playerContainer = document.getElementById('player-container');
         const player = document.getElementById('main-player');
         const titleLabel = document.getElementById('playing-title');
+        const currentInstance = instances[currentInstanceIndex];
 
         playerContainer.style.display = 'block';
         titleLabel.innerText = title;
         
-        // This points to the direct video stream provided by the instance
-        player.src = `${instance}/latest_version?id=${id}&itag=18`; 
+        // This itag=18 provides a 360p mp4 stream which is highly compatible with mobile background play
+        player.src = `${currentInstance}/latest_version?id=${id}&itag=18`; 
         player.play();
         
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Initialize status
+    updateStatus();
 </script>
 
 </body>
