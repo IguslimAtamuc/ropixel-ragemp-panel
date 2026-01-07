@@ -39,19 +39,21 @@
 </div>
 
 <script>
-    // List of multiple backup servers
+    // Updated list of reliable instances
     const instances = [
-        "https://inv.nadeko.net",
-        "https://invidious.no-logs.com",
         "https://iv.ggtyler.dev",
-        "https://invidious.projectsegfau.lt"
+        "https://inv.nadeko.net",
+        "https://invidious.flokinet.to",
+        "https://inv.tux.pizza"
     ];
 
+    // This proxy is essential for GitHub Pages to bypass CORS blocks
+    const proxy = "https://corsproxy.io/?"; 
     let currentInstanceIndex = 0;
 
     function updateStatus() {
         const statusDiv = document.getElementById('status');
-        statusDiv.innerText = `Connected to: ${instances[currentInstanceIndex].split('//')[1]}`;
+        statusDiv.innerText = `Connected via: ${instances[currentInstanceIndex].split('//')[1]}`;
     }
 
     async function search() {
@@ -61,15 +63,16 @@
 
         if (!query) return;
 
-        btn.innerText = "Wait...";
-        resultsDiv.innerHTML = '<div class="loading">Searching secure servers...</div>';
+        btn.innerText = "...";
+        resultsDiv.innerHTML = '<div class="loading">Bypassing security filters...</div>';
 
         try {
             const currentInstance = instances[currentInstanceIndex];
-            // Fetching search results from the active instance
-            const response = await fetch(`${currentInstance}/api/v1/search?q=${encodeURIComponent(query)}`);
+            // Wrapping the API call in the proxy
+            const apiUrl = `${currentInstance}/api/v1/search?q=${encodeURIComponent(query)}`;
+            const response = await fetch(proxy + encodeURIComponent(apiUrl));
             
-            if (!response.ok) throw new Error("Server error");
+            if (!response.ok) throw new Error("Blocked");
 
             const data = await response.json();
             renderResults(data);
@@ -77,11 +80,11 @@
             btn.innerText = "Search";
 
         } catch (error) {
-            console.warn(`Instance ${instances[currentInstanceIndex]} failed. Trying next...`);
-            // Rotate to next instance and retry
+            console.warn(`Server ${instances[currentInstanceIndex]} blocked or busy. Rotating...`);
             currentInstanceIndex = (currentInstanceIndex + 1) % instances.length;
+            
             if (currentInstanceIndex === 0) {
-                resultsDiv.innerHTML = '<div style="color:red">All servers are currently busy. Please try again in a minute.</div>';
+                resultsDiv.innerHTML = '<div style="color:red; padding:20px;">All servers failed. Try refreshing the page in a moment.</div>';
                 btn.innerText = "Search";
             } else {
                 search(); 
@@ -97,8 +100,10 @@
             if (item.type === 'video') {
                 const card = document.createElement('div');
                 card.className = 'video-card';
+                // Using proxy for thumbnails to ensure they load on GitHub
+                const thumb = proxy + encodeURIComponent(item.videoThumbnails[0].url);
                 card.innerHTML = `
-                    <img src="${item.videoThumbnails[0].url}" onerror="this.src='https://via.placeholder.com/120x90?text=No+Thumb'">
+                    <img src="${thumb}">
                     <div>
                         <strong>${item.title}</strong>
                         <p style="font-size: 0.8em; color: #aaa;">${item.author}</p>
@@ -114,22 +119,21 @@
         const playerContainer = document.getElementById('player-container');
         const player = document.getElementById('main-player');
         const titleLabel = document.getElementById('playing-title');
-        const currentInstance = instances[currentInstanceIndex];
-
+        
         playerContainer.style.display = 'block';
         titleLabel.innerText = title;
         
-        // This itag=18 provides a 360p mp4 stream which is highly compatible with mobile background play
-        player.src = `${currentInstance}/latest_version?id=${id}&itag=18`; 
+        // This itag=18 stream works best for mobile background playback
+        player.src = `${instances[currentInstanceIndex]}/latest_version?id=${id}&itag=18`; 
         player.play();
         
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Initialize status
     updateStatus();
 </script>
 
 </body>
 </html>
+
 
