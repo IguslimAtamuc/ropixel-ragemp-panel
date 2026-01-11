@@ -6,247 +6,135 @@
     <title>Black Silva | Exclusive Model Call</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --accent: #d4af37; /* Muted Gold */
-            --bg: #050505;
-            --card: #0f0f0f;
-            --text: #ffffff;
-            --text-dim: #888;
-            --border: #222;
-        }
+        :root { --accent: #d4af37; --bg: #050505; --card: #0f0f0f; --text: #ffffff; --text-dim: #888; --border: #222; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        
+        /* Layout */
+        header { padding: 40px 20px; text-align: center; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; letter-spacing: 10px; text-transform: uppercase; cursor: pointer; }
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        header {
-            padding: 60px 20px 20px;
-            text-align: center;
-        }
-
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        /* Video Section */
-        .intro-container {
-            max-width: 900px;
-            margin: 0 auto 60px;
-            padding: 0 20px;
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            background: #000;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Form Layout */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .form-card {
-            background: var(--card);
-            padding: 40px;
-            border-radius: 4px;
-            border-top: 2px solid var(--accent);
-        }
-
-        .section-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--accent);
-            margin-bottom: 30px;
-            display: block;
-            text-align: center;
-        }
-
-        .field { margin-bottom: 30px; }
-
-        label {
-            display: block;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            color: var(--text-dim);
-        }
-
-        input, select {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #333;
-            color: #fff;
-            padding: 12px 0;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        /* Photo Upload Styling */
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .upload-box {
-            border: 1px solid var(--border);
-            padding: 15px 5px;
-            text-align: center;
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            color: var(--text-dim);
-            transition: 0.3s;
-        }
-
+        /* Form Styling */
+        .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); }
+        .field { margin-bottom: 25px; }
+        label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
+        input, select { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
+        
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.3s; }
         .upload-box:hover { border-color: var(--accent); color: #fff; }
-        .upload-box.selected { border-color: var(--accent); color: var(--accent); }
 
-        /* Terms & Conditions */
-        .terms-box {
-            height: 100px;
-            overflow-y: scroll;
-            background: #000;
-            padding: 15px;
-            font-size: 0.7rem;
-            color: #555;
-            border: 1px solid var(--border);
-            margin-bottom: 15px;
-        }
+        .btn-submit { width: 100%; background: var(--text); color: #000; border: none; padding: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px; cursor: pointer; margin-top: 20px; }
+        
+        /* Admin Panel Styling */
+        #admin-panel { display: none; padding: 40px 20px; background: #000; min-height: 100vh; }
+        .app-row { background: var(--card); padding: 20px; border: 1px solid var(--border); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .app-info h3 { margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; }
+        .app-info p { color: var(--text-dim); font-size: 0.8rem; margin: 5px 0; }
+        .admin-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
 
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-        }
-
-        .checkbox-group input { width: auto; margin-right: 10px; }
-
-        .btn-submit {
-            width: 100%;
-            background: var(--text);
-            color: #000;
-            border: none;
-            padding: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            cursor: pointer;
-            margin-top: 30px;
-        }
-
-        .btn-submit:hover { background: var(--accent); color: #fff; }
-
-        @media (max-width: 600px) {
-            .photo-grid { grid-template-columns: 1fr; }
-            .logo { font-size: 2rem; }
-        }
+        @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr; } .app-row { flex-direction: column; align-items: flex-start; gap: 15px; } }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 class="logo">Black Silva</h1>
-</header>
+<div id="public-site">
+    <header>
+        <h1 class="logo" onclick="toggleAdmin()">Black Silva</h1>
+    </header>
 
-<div class="intro-container">
-    <div class="video-wrapper">
-        <iframe src="https://www.youtube.com/embed/Tic_zvXSeRU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="intro-container container">
+        <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:1px solid var(--border);">
+            <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/Tic_zvXSeRU" frameborder="0" allowfullscreen></iframe>
+        </div>
     </div>
-    <p style="text-align:center; font-style:italic; color:var(--accent); margin-top:15px;">Program Introduction by Black Silva</p>
-</div>
 
-<div class="container">
-    <div class="form-card">
-        <span class="section-label">Apply to be a Muse</span>
-        
-        <form action="https://formspree.io/f/blacksilvahd@gmail.com" method="POST" enctype="multipart/form-data">
-            
-            <div class="field">
-                <label>Full Name</label>
-                <input type="text" name="name" placeholder="John Doe" required>
-            </div>
-
-            <div class="field">
-                <label>Email Address</label>
-                <input type="email" name="email" placeholder="email@example.com" required>
-            </div>
-
-            <div class="field">
-                <label>Desired Session</label>
-                <select name="session" required>
-                    <option value="" disabled selected>Select Look</option>
-                    <option value="textured-crop">Textured Crop</option>
-                    <option value="precision-fade">Precision Fade</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <label>Upload Required Photos (Front / Side / Back)</label>
-                <div class="photo-grid">
-                    <div class="upload-box" onclick="document.getElementById('front').click()">
-                        Front View
-                        <input type="file" id="front" name="photo_front" style="display:none" accept="image/*" required>
-                    </div>
-                    <div class="upload-box" onclick="document.getElementById('side').click()">
-                        Side View
-                        <input type="file" id="side" name="photo_side" style="display:none" accept="image/*" required>
-                    </div>
-                    <div class="upload-box" onclick="document.getElementById('back').click()">
-                        Back View
-                        <input type="file" id="back" name="photo_back" style="display:none" accept="image/*" required>
+    <div class="container">
+        <div class="form-card">
+            <span style="text-align:center; display:block; color:var(--accent); letter-spacing:3px; font-size:0.7rem; margin-bottom:20px;">MODEL APPLICATION</span>
+            <form id="applicationForm">
+                <div class="field"><label>Full Name</label><input type="text" id="name" required></div>
+                <div class="field"><label>Email Address</label><input type="email" id="email" required></div>
+                <div class="field">
+                    <label>Photos (Front/Side/Back)</label>
+                    <div class="photo-grid">
+                        <div class="upload-box">Front<input type="file" id="f_img" accept="image/*" required></div>
+                        <div class="upload-box">Side<input type="file" id="s_img" accept="image/*" required></div>
+                        <div class="upload-box">Back<input type="file" id="b_img" accept="image/*" required></div>
                     </div>
                 </div>
-            </div>
-
-            <div class="field">
-                <label>Preferred Date & Time</label>
-                <input type="datetime-local" name="date" required>
-            </div>
-
-            <label>Terms & Conditions</label>
-            <div class="terms-box">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-
-            <div class="checkbox-group">
-                <input type="checkbox" name="terms_agreement" required>
-                <span>I agree to the terms and understand this is a professional hair modeling session.</span>
-            </div>
-
-            <button type="submit" class="btn-submit">Submit Application</button>
-        </form>
+                <button type="submit" class="btn-submit">Submit Application</button>
+            </form>
+        </div>
     </div>
 </div>
+
+<div id="admin-panel">
+    <div class="container">
+        <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">APPLICANT DATABASE</h2>
+        <button onclick="toggleAdmin()" style="background:none; border:1px solid #333; color:#888; cursor:pointer; margin-bottom:30px;">← Back to Site</button>
+        <div id="applications-list">
+            <p style="color:var(--text-dim)">Loading applications...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Logic to switch between Webpage and Admin Panel
+    function toggleAdmin() {
+        const pass = prompt("Enter Admin Password:");
+        if(pass === "Silva2026") { // Set your password here
+            const site = document.getElementById('public-site');
+            const admin = document.getElementById('admin-panel');
+            site.style.display = site.style.display === 'none' ? 'block' : 'none';
+            admin.style.display = admin.style.display === 'block' ? 'none' : 'block';
+            loadApplications();
+        } else {
+            alert("Access Denied");
+        }
+    }
+
+    // Mock Database Logic (In a real scenario, you'd connect this to Firebase/Supabase)
+    let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
+
+    document.getElementById('applicationForm').onsubmit = function(e) {
+        e.preventDefault();
+        const newApp = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            date: new Date().toLocaleDateString()
+        };
+        db.push(newApp);
+        localStorage.setItem('bs_apps', JSON.stringify(db));
+        alert("Application sent successfully to Black Silva.");
+        this.reset();
+    };
+
+    function loadApplications() {
+        const list = document.getElementById('applications-list');
+        list.innerHTML = "";
+        if(db.length === 0) list.innerHTML = "No applications yet.";
+        
+        db.forEach((app, index) => {
+            const row = document.createElement('div');
+            row.className = 'app-row';
+            row.innerHTML = `
+                <div class="app-info">
+                    <h3>${app.name}</h3>
+                    <p>${app.email} | Applied: ${app.date}</p>
+                </div>
+                <button class="admin-btn" onclick="sendEmail('${app.email}', '${app.name}')">Contact Model</button>
+            `;
+            list.appendChild(row);
+        });
+    }
+
+    function sendEmail(email, name) {
+        const subject = encodeURIComponent("Black Silva | Your Hair Model Application");
+        const body = encodeURIComponent(`Hello ${name},\n\nWe reviewed your application and would like to move forward...`);
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+</script>
 
 </body>
 </html>
