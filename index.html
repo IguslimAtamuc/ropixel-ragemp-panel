@@ -3,137 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Silva | Model Call</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@200;400&display=swap" rel="stylesheet">
+    <title>Black Silva | Exclusive Model Call</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #c5a059;
-            --black: #0a0a0a;
-            --gray: #1a1a1a;
-            --white: #ffffff;
+            --accent: #d4af37; /* Muted Gold */
+            --bg: #050505;
+            --card: #0f0f0f;
+            --text: #ffffff;
+            --text-dim: #888;
         }
 
         body {
-            background-color: var(--black);
-            color: var(--white);
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* Luxury Header */
         header {
-            padding: 40px 20px;
+            padding: 60px 20px 20px;
             text-align: center;
         }
 
         .logo {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            letter-spacing: 8px;
+            font-size: 2.8rem;
+            letter-spacing: 10px;
             text-transform: uppercase;
             margin: 0;
         }
 
-        .subtitle {
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            color: var(--gold);
-            text-transform: uppercase;
-            margin-top: 10px;
+        /* Intro Video Section (Admin/You) */
+        .intro-container {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border: 1px solid #222;
+            background: #000;
         }
 
-        .hero-text {
-            text-align: center;
-            margin-bottom: 50px;
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        h2 {
+        .intro-title {
             font-family: 'Cormorant Garamond', serif;
-            font-weight: 300;
-            font-size: 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            font-style: italic;
+            color: var(--accent);
         }
 
-        /* Form Styling */
-        .form-section {
-            background: var(--gray);
-            padding: 30px;
-            border-radius: 2px;
-            border: 1px solid #333;
+        /* Application Form */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .input-group {
-            margin-bottom: 25px;
+        .form-card {
+            background: var(--card);
+            padding: 40px;
+            border-radius: 4px;
+            border-top: 2px solid var(--accent);
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-bottom: 30px;
+            display: block;
+            text-align: center;
+        }
+
+        .field {
+            margin-bottom: 30px;
         }
 
         label {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 8px;
-            color: #888;
+            margin-bottom: 10px;
+            color: var(--text-dim);
         }
 
-        input[type="text"],
-        input[type="email"],
-        select,
-        textarea {
+        input, select, textarea {
             width: 100%;
             background: transparent;
             border: none;
-            border-bottom: 1px solid #444;
-            color: white;
-            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            color: #fff;
+            padding: 12px 0;
             font-size: 1rem;
+            font-family: 'Inter', sans-serif;
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input:focus { border-bottom-color: var(--gold); }
-
-        /* File Upload Styling */
-        .file-upload {
-            border: 1px dashed #444;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
             transition: 0.3s;
         }
 
-        .file-upload:hover { border-color: var(--gold); background: #222; }
+        input:focus { border-bottom-color: var(--accent); }
 
-        .file-upload input { display: none; }
+        /* Custom File Upload Button */
+        .upload-box {
+            border: 1px solid #222;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: 0.3s;
+        }
+
+        .upload-box:hover {
+            border-color: var(--accent);
+            color: #fff;
+        }
 
         .btn-submit {
             width: 100%;
-            background: var(--white);
-            color: var(--black);
+            background: var(--text);
+            color: #000;
             border: none;
             padding: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: bold;
+            letter-spacing: 5px;
             cursor: pointer;
-            margin-top: 30px;
-            transition: 0.4s;
+            margin-top: 20px;
+            transition: 0.3s;
         }
 
         .btn-submit:hover {
-            background: var(--gold);
-            color: white;
+            background: var(--accent);
+            color: #fff;
         }
 
-        /* Responsive Mobile Adjustments */
+        /* Mobile Optimization */
         @media (max-width: 600px) {
-            .logo { font-size: 1.8rem; }
-            .form-section { padding: 20px; }
+            .logo { font-size: 2rem; }
+            .form-card { padding: 25px; }
         }
     </style>
 </head>
@@ -141,55 +170,54 @@
 
 <header>
     <h1 class="logo">Black Silva</h1>
-    <div class="subtitle">Artistry in Texture</div>
 </header>
 
-<div class="container">
-    <div class="hero-text">
-        <h2>Model Application</h2>
-        <p>We are seeking canvases for our upcoming seasonal showcase.</p>
+<div class="intro-container">
+    <div class="video-wrapper">
+        <video controls poster="thumbnail.jpg">
+            <source src="your-introduction.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
+    <p class="intro-title">A Message from the Stylist</p>
+</div>
 
-    <form class="form-section" action="#" method="POST" enctype="multipart/form-data">
+<div class="container">
+    <div class="form-card">
+        <span class="section-label">Model Application</span>
         
-        <div class="input-group">
-            <label>Full Name</label>
-            <input type="text" placeholder="e.g. Alexander Silva" required>
-        </div>
+        <form action="#" method="POST" enctype="multipart/form-data">
+            
+            <div class="field">
+                <label>Full Name</label>
+                <input type="text" placeholder="Your Name" required>
+            </div>
 
-        <div class="input-group">
-            <label>Desired Haircut Session</label>
-            <select required>
-                <option value="" disabled selected>Select an option</option>
-                <option value="sculpted-fade">Sculpted Fade - Jan 20th</option>
-                <option value="editorial-length">Editorial Length - Jan 22nd</option>
-                <option value="avant-garde">Avant-Garde Color - Jan 25th</option>
-            </select>
-        </div>
+            <div class="field">
+                <label>The Session</label>
+                <select required>
+                    <option value="" disabled selected>Select Look</option>
+                    <option value="crop">Textured Crop - Jan 20</option>
+                    <option value="fade">Precision Fade - Jan 22</option>
+                </select>
+            </div>
 
-        <div class="input-group">
-            <label>Upload a Video (360° view of your current hair)</label>
-            <label for="video-upload" class="file-upload">
-                <span>Click to upload Video (MP4/MOV)</span>
-                <input type="file" id="video-upload" accept="video/*">
-            </label>
-        </div>
+            <div class="field">
+                <label>Your Current Hair (Photo)</label>
+                <div class="upload-box" onclick="document.getElementById('photo').click()">
+                    Click to Upload Photo
+                    <input type="file" id="photo" style="display:none" accept="image/*">
+                </div>
+            </div>
 
-        <div class="input-group">
-            <label>Upload Recent Portrait</label>
-            <label for="photo-upload" class="file-upload">
-                <span>Click to upload Photo (JPG/PNG)</span>
-                <input type="file" id="photo-upload" accept="image/*">
-            </label>
-        </div>
+            <div class="field">
+                <label>Desired Date & Time</label>
+                <input type="datetime-local">
+            </div>
 
-        <div class="input-group">
-            <label>Your Availability</label>
-            <input type="text" placeholder="Select your preferred date/time" onfocus="(this.type='datetime-local')">
-        </div>
-
-        <button type="submit" class="btn-submit">Send Application</button>
-    </form>
+            <button type="submit" class="btn-submit">Submit Application</button>
+        </form>
+    </div>
 </div>
 
 </body>
