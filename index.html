@@ -10,70 +10,65 @@
         :root { --accent: #d4af37; --bg: #050505; --card: #0f0f0f; --text: #ffffff; --text-dim: #888; --border: #222; }
         body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
-        header { padding: 60px 20px 20px; text-align: center; }
+        header { padding: 40px 20px 20px; text-align: center; position: relative; }
         .logo { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; letter-spacing: 10px; text-transform: uppercase; margin: 0; }
         .container { max-width: 700px; margin: 0 auto; padding: 20px; }
 
-        /* Video Section */
-        .intro-container { margin-bottom: 40px; }
-        .video-wrapper { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:1px solid var(--border); }
+        /* Icons */
+        .top-icons { position: absolute; top: 20px; right: 20px; display: flex; gap: 20px; }
+        .icon-btn { color: var(--accent); font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+        .icon-btn:hover { color: #fff; }
+
+        .video-wrapper { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:1px solid var(--border); margin-bottom: 40px; }
         .video-wrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
 
         .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); margin-bottom: 50px; }
         .field { margin-bottom: 25px; }
         label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
-        input[type="text"], input[type="email"] { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; font-family: 'Inter', sans-serif; }
+        input[type="text"], input[type="email"], select { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
         
         /* Checkbox Styling */
         .check-field { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; cursor: pointer; }
-        .check-field input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; margin-top: 2px; }
-        .check-label { font-size: 0.85rem; line-height: 1.4; color: #eee; text-transform: none; letter-spacing: 0; }
+        .check-field input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
 
-        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.3s; position: relative; }
-        .upload-box:hover { border-color: var(--accent); color: #fff; }
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; cursor: pointer; color: var(--text-dim); }
         .upload-box.done { border-color: var(--accent); color: var(--accent); }
 
-        .btn-submit { width: 100%; background: var(--text); color: #000; border: none; padding: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px; cursor: pointer; margin-top: 30px; transition: 0.3s; }
-        .btn-submit:hover { background: var(--accent); color: #fff; }
-        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-submit { width: 100%; background: var(--text); color: #000; border: none; padding: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px; cursor: pointer; margin-top: 30px; }
         .btn-submit.success { background: #28a745; color: #fff; }
 
-        .admin-trigger { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--card); border: 1px solid var(--accent); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 1000; transition: 0.3s; }
-        .admin-trigger i { color: var(--accent); font-size: 1.2rem; }
-
-        #admin-panel { display: none; padding: 60px 20px; background: #000; min-height: 100vh; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 2000; }
+        /* Admin & Portal Styles */
+        #admin-panel, #model-portal { display: none; padding: 60px 20px; background: #000; min-height: 100vh; position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 2000; overflow-y: auto; }
         .app-row { background: var(--card); padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; border-left: 3px solid var(--accent); }
-        .app-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-        
-        .admin-photo-display { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
         .admin-photo-display img { width: 100%; height: 120px; object-fit: cover; border: 1px solid #222; }
-        
-        .q-results { background: #000; padding: 15px; margin-top: 15px; border-radius: 4px; font-size: 0.8rem; }
-        .q-item { margin-bottom: 10px; border-bottom: 1px solid #111; padding-bottom: 5px; }
-        .q-item b { color: var(--accent); display: block; margin-bottom: 3px; font-size: 0.7rem; text-transform: uppercase; }
+        .admin-btn { background: var(--text); color: #000; border: none; padding: 8px 15px; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-right: 5px; }
+        .btn-approve { background: #d4af37; color: #000; }
+        .btn-delete { background: #600; color: #fff; }
 
-        .admin-btn { background: var(--text); color: #000; border: none; padding: 10px 20px; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-        .btn-delete { background: #600; color: #fff; margin-left: 10px; }
-
-        @media (max-width: 600px) { .photo-grid, .admin-photo-display { grid-template-columns: 1fr; } }
+        /* Booking Styles */
+        .haircut-preview { width: 100%; max-height: 300px; object-fit: cover; border: 1px solid var(--accent); margin-bottom: 20px; }
+        .booking-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div id="public-site">
-    <header><h1 class="logo">Black Silva</h1></header>
+    <header>
+        <div class="top-icons">
+            <i class="fas fa-calendar-alt icon-btn" onclick="openPortal()" title="Model Login"></i>
+            <i class="fas fa-user-lock icon-btn" onclick="toggleAdmin()" title="Admin"></i>
+        </div>
+        <h1 class="logo">Black Silva</h1>
+    </header>
 
-    <div class="intro-container container">
+    <div class="container">
         <div class="video-wrapper">
             <iframe src="https://www.youtube.com/embed/Tic_zvXSeRU" frameborder="0" allowfullscreen></iframe>
         </div>
-    </div>
 
-    <div class="container">
         <div class="form-card">
             <span style="text-align:center; display:block; color:var(--accent); letter-spacing:4px; font-size:0.75rem; margin-bottom:30px; font-weight:500;">APPLY TO BE A MUSE</span>
-            
             <form id="applicationForm">
                 <div class="field"><label>Full Name</label><input type="text" id="name" required></div>
                 <div class="field"><label>Email Address</label><input type="email" id="email" required></div>
@@ -81,49 +76,70 @@
                 <div style="margin: 40px 0 20px; border-bottom: 1px solid var(--accent); padding-bottom: 10px;">
                     <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--accent);">QUALIFYING QUESTIONS</span>
                 </div>
+                <label class="check-field"><input type="checkbox" id="q1" required><span class="check-label">1. I agree to the transformation.</span></label>
+                <label class="check-field"><input type="checkbox" id="q2" required><span class="check-label">2. I am available for the filming date.</span></label>
+                <label class="check-field"><input type="checkbox" id="q3" required><span class="check-label">3. I allow the use of my image for social media.</span></label>
+                <label class="check-field"><input type="checkbox" id="q4" required><span class="check-label">4. I am over 18 years old.</span></label>
+                <label class="check-field"><input type="checkbox" id="q5" required><span class="check-label">5. I understand this is a professional model call.</span></label>
 
-                <label class="check-field">
-                    <input type="checkbox" id="q1" required>
-                    <span class="check-label">1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?</span>
-                </label>
-                <label class="check-field">
-                    <input type="checkbox" id="q2" required>
-                    <span class="check-label">2. Sed do eiusmod tempor incididunt ut labore et dolore?</span>
-                </label>
-                <label class="check-field">
-                    <input type="checkbox" id="q3" required>
-                    <span class="check-label">3. Ut enim ad minim veniam, quis nostrud exercitation?</span>
-                </label>
-                <label class="check-field">
-                    <input type="checkbox" id="q4" required>
-                    <span class="check-label">4. Duis aute irure dolor in reprehenderit in voluptate?</span>
-                </label>
-                <label class="check-field">
-                    <input type="checkbox" id="q5" required>
-                    <span class="check-label">5. Excepteur sint occaecat cupidatat non proident?</span>
-                </label>
-
-                <div class="field" style="margin-top: 30px;">
+                <div class="field">
                     <label>Photos (Front / Side / Back)</label>
                     <div class="photo-grid">
-                        <div class="upload-box" id="box_f" onclick="document.getElementById('f_img').click()">Front View<input type="file" id="f_img" style="display:none" accept="image/*" onchange="previewFile('f')"></div>
-                        <div class="upload-box" id="box_s" onclick="document.getElementById('s_img').click()">Side View<input type="file" id="s_img" style="display:none" accept="image/*" onchange="previewFile('s')"></div>
-                        <div class="upload-box" id="box_b" onclick="document.getElementById('b_img').click()">Back View<input type="file" id="b_img" style="display:none" accept="image/*" onchange="previewFile('b')"></div>
+                        <div class="upload-box" id="box_f" onclick="document.getElementById('f_img').click()">Front<input type="file" id="f_img" style="display:none" accept="image/*" onchange="previewFile('f')"></div>
+                        <div class="upload-box" id="box_s" onclick="document.getElementById('s_img').click()">Side<input type="file" id="s_img" style="display:none" accept="image/*" onchange="previewFile('s')"></div>
+                        <div class="upload-box" id="box_b" onclick="document.getElementById('b_img').click()">Back<input type="file" id="b_img" style="display:none" accept="image/*" onchange="previewFile('b')"></div>
                     </div>
                 </div>
-                
                 <button type="submit" class="btn-submit" id="submitBtn">Submit Application</button>
             </form>
         </div>
     </div>
-    <div class="admin-trigger" onclick="toggleAdmin()"><i class="fas fa-user-lock"></i></div>
+</div>
+
+<div id="model-portal">
+    <div class="container">
+        <div id="portal-login">
+            <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">MODEL LOGIN</h2>
+            <p style="color:var(--text-dim); font-size:0.8rem;">Enter the email used in your application to check status.</p>
+            <div class="field"><input type="email" id="loginEmail" placeholder="email@example.com"></div>
+            <button class="admin-btn" onclick="checkAccess()">Enter Portal</button>
+            <button class="admin-btn" onclick="closeAll()">Cancel</button>
+        </div>
+
+        <div id="portal-content" style="display:none;">
+            <h2 id="welcomeName" style="font-family: 'Cormorant Garamond'; letter-spacing: 3px;"></h2>
+            <p style="color:var(--accent); font-size:0.7rem; letter-spacing:2px;">TRANSFORMATION DETAILS</p>
+            <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=1000&auto=format&fit=crop" class="haircut-preview" alt="Planned Haircut">
+            
+            <div id="booking-section">
+                <label>Select Your Appointment</label>
+                <div class="booking-slots">
+                    <select id="selectedDate">
+                        <option value="Jan 20">Jan 20, 2026</option>
+                        <option value="Jan 21">Jan 21, 2026</option>
+                    </select>
+                    <select id="selectedTime">
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="06:00 PM">06:00 PM</option>
+                    </select>
+                </div>
+                <button class="btn-submit" onclick="confirmBooking()">Confirm Schedule</button>
+            </div>
+            <div id="booking-confirmed" style="display:none; text-align:center; color:var(--accent);">
+                <h3>BOOKING CONFIRMED</h3>
+                <p id="displayBooking"></p>
+            </div>
+            <br><button class="admin-btn" onclick="closeAll()">Exit</button>
+        </div>
+    </div>
 </div>
 
 <div id="admin-panel">
     <div class="container">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px; margin:0;">APPLICATIONS</h2>
-            <button onclick="logout()" style="background:none; border:1px solid #333; color:#888; cursor:pointer; padding: 10px;">Close Panel</button>
+            <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">APPLICATIONS</h2>
+            <button onclick="closeAll()" class="admin-btn">Close</button>
         </div>
         <div id="applications-list"></div>
     </div>
@@ -132,72 +148,68 @@
 <script>
     let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
     let currentPhotos = { f: null, s: null, b: null };
+    let activeUser = null;
 
     function previewFile(type) {
         const file = document.getElementById(type + '_img').files[0];
         const reader = new FileReader();
-        reader.onloadend = function() {
+        reader.onloadend = () => {
             currentPhotos[type] = reader.result;
             document.getElementById('box_' + type).classList.add('done');
-            document.getElementById('box_' + type).innerText = type.toUpperCase() + " LOADED";
+            document.getElementById('box_' + type).innerText = "LOADED";
         }
-        if (file) { reader.readAsDataURL(file); }
+        if (file) reader.readAsDataURL(file);
     }
 
     function toggleAdmin() {
-        const pass = prompt("Access Restricted:");
+        const pass = prompt("Admin Password:");
         if(pass === "Alin1234.!") { 
-            document.getElementById('public-site').style.display = 'none';
             document.getElementById('admin-panel').style.display = 'block';
             loadApplications();
         }
     }
 
-    function logout() {
-        document.getElementById('public-site').style.display = 'block';
-        document.getElementById('admin-panel').style.display = 'none';
+    function openPortal() { document.getElementById('model-portal').style.display = 'block'; }
+    function closeAll() { 
+        document.querySelectorAll('#admin-panel, #model-portal').forEach(el => el.style.display = 'none');
+        document.getElementById('portal-login').style.display = 'block';
+        document.getElementById('portal-content').style.display = 'none';
     }
 
+    // Application Submission
     document.getElementById('applicationForm').onsubmit = function(e) {
         e.preventDefault();
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.innerText = "UPLOADING...";
-        submitBtn.disabled = true;
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "UPLOADING...";
+        btn.disabled = true;
 
         const newApp = {
             id: Date.now(),
             name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            answers: [
-                document.getElementById('q1').checked ? "Agreed" : "Not Agreed",
-                document.getElementById('q2').checked ? "Agreed" : "Not Agreed",
-                document.getElementById('q3').checked ? "Agreed" : "Not Agreed",
-                document.getElementById('q4').checked ? "Agreed" : "Not Agreed",
-                document.getElementById('q5').checked ? "Agreed" : "Not Agreed"
-            ],
+            email: document.getElementById('email').value.toLowerCase(),
+            approved: false,
+            booking: null,
+            answers: ["Agreed","Agreed","Agreed","Agreed","Agreed"],
             photos: { ...currentPhotos },
-            date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
+            date: new Date().toLocaleString()
         };
 
-        try {
-            db.push(newApp);
-            localStorage.setItem('bs_apps', JSON.stringify(db));
-            submitBtn.innerText = "SUCCESS ✓";
-            submitBtn.classList.add('success');
-            
-            setTimeout(() => {
-                alert("Application received.");
-                location.reload(); 
-            }, 800);
-        } catch (e) {
-            alert("Error: Photos may be too large.");
-            submitBtn.disabled = false;
-            submitBtn.innerText = "Submit Application";
-        }
+        db.push(newApp);
+        localStorage.setItem('bs_apps', JSON.stringify(db));
+        btn.innerText = "SUCCESS ✓";
+        setTimeout(() => location.reload(), 1000);
     };
 
+    // Admin Functions
+    function approveApp(id) {
+        db = db.map(app => app.id === id ? {...app, approved: true} : app);
+        localStorage.setItem('bs_apps', JSON.stringify(db));
+        alert("Model approved for login.");
+        loadApplications();
+    }
+
     function deleteApp(id) {
-        if(confirm("Delete application?")) {
+        if(confirm("Delete?")) {
             db = db.filter(app => app.id !== id);
             localStorage.setItem('bs_apps', JSON.stringify(db));
             loadApplications();
@@ -206,37 +218,65 @@
 
     function loadApplications() {
         const list = document.getElementById('applications-list');
-        list.innerHTML = db.length === 0 ? "<p>No applications.</p>" : "";
-        
-        [...db].reverse().forEach((app) => {
+        list.innerHTML = db.length ? "" : "<p>No applications.</p>";
+        [...db].reverse().forEach(app => {
             const row = document.createElement('div');
             row.className = 'app-row';
             row.innerHTML = `
-                <div class="app-header">
+                <div style="display:flex; justify-content:space-between;">
                     <div>
-                        <h3 style="margin:0">${app.name}</h3>
-                        <small style="color:var(--accent)">${app.email} | ${app.date}</small>
+                        <b>${app.name}</b> [${app.approved ? 'APPROVED' : 'PENDING'}]<br>
+                        <small>${app.email}</small>
                     </div>
                     <div>
-                        <button class="admin-btn" onclick="window.location.href='mailto:${app.email}'">Email</button>
+                        ${!app.approved ? `<button class="admin-btn btn-approve" onclick="approveApp(${app.id})">Approve</button>` : ''}
                         <button class="admin-btn btn-delete" onclick="deleteApp(${app.id})">Delete</button>
                     </div>
                 </div>
-                <div class="admin-photo-display">
-                    <img src="${app.photos.f || 'https://via.placeholder.com/150'}">
-                    <img src="${app.photos.s || 'https://via.placeholder.com/150'}">
-                    <img src="${app.photos.b || 'https://via.placeholder.com/150'}">
+                <div style="color:var(--accent); margin: 10px 0; font-size:0.8rem;">
+                    ${app.booking ? `📅 BOOKED: ${app.booking.day} at ${app.booking.time}` : '⌛ Not booked yet'}
                 </div>
-                <div class="q-results">
-                    <div class="q-item"><b>Q1: Lorem Ipsum...</b> ${app.answers[0]}</div>
-                    <div class="q-item"><b>Q2: Lorem Ipsum...</b> ${app.answers[1]}</div>
-                    <div class="q-item"><b>Q3: Lorem Ipsum...</b> ${app.answers[2]}</div>
-                    <div class="q-item"><b>Q4: Lorem Ipsum...</b> ${app.answers[3]}</div>
-                    <div class="q-item"><b>Q5: Lorem Ipsum...</b> ${app.answers[4]}</div>
+                <div class="admin-photo-display" style="display:grid; grid-template-columns:repeat(3,1fr); gap:5px;">
+                    <img src="${app.photos.f || ''}"><img src="${app.photos.s || ''}"><img src="${app.photos.b || ''}">
                 </div>
             `;
             list.appendChild(row);
         });
+    }
+
+    // Model Portal Functions
+    function checkAccess() {
+        const email = document.getElementById('loginEmail').value.toLowerCase();
+        const user = db.find(u => u.email === email);
+
+        if (!user) return alert("Application not found.");
+        if (!user.approved) return alert("Your application is still under review.");
+
+        activeUser = user;
+        document.getElementById('portal-login').style.display = 'none';
+        document.getElementById('portal-content').style.display = 'block';
+        document.getElementById('welcomeName').innerText = "Welcome, " + user.name;
+        
+        if (user.booking) {
+            showConfirmed(user.booking);
+        }
+    }
+
+    function confirmBooking() {
+        const booking = {
+            day: document.getElementById('selectedDate').value,
+            time: document.getElementById('selectedTime').value
+        };
+        
+        db = db.map(u => u.email === activeUser.email ? {...u, booking: booking} : u);
+        localStorage.setItem('bs_apps', JSON.stringify(db));
+        showConfirmed(booking);
+    }
+
+    function showConfirmed(booking) {
+        document.getElementById('booking-section').style.display = 'none';
+        document.getElementById('booking-confirmed').style.display = 'block';
+        document.getElementById('displayBooking').innerText = `${booking.day} @ ${booking.time}`;
     }
 </script>
 </body>
