@@ -9,345 +9,108 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        :root {
-            --accent: #d4af37;
-            --bg: #050505;
-            --card: #0f0f0f;
-            --text: #ffffff;
-            --text-dim: #888;
-            --border: #222;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        header {
-            padding: 40px 20px 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-        }
-
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .top-icons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .icon-btn {
-            color: var(--accent);
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            margin-bottom: 40px;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .form-card {
-            background: var(--card);
-            padding: 40px;
-            border-top: 2px solid var(--accent);
-        }
-
-        label {
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            color: var(--text-dim);
-        }
-
-        input, select {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #333;
-            color: #fff;
-            padding: 12px 0;
-            outline: none;
-        }
-
-        .check-field {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 10px;
-        }
-
-        .upload-box {
-            border: 1px solid var(--border);
-            padding: 15px;
-            text-align: center;
-            font-size: 0.6rem;
-            cursor: pointer;
-            color: var(--text-dim);
-        }
-
-        .upload-box.done {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 18px;
-            margin-top: 30px;
-            letter-spacing: 4px;
-            cursor: pointer;
-        }
-
-        .btn-submit.success {
-            background: #28a745;
-            color: #fff;
-        }
-
-        #admin-panel, #model-portal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 2000;
-            overflow-y: auto;
-        }
-
-        .app-row {
-            background: var(--card);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 3px solid var(--accent);
-        }
-
-        .admin-btn {
-            padding: 8px 14px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-approve { background: var(--accent); }
-        .btn-delete { background: #600; color: #fff; }
-
-        .haircut-preview {
-            width: 100%;
-            border: 1px solid var(--accent);
-            margin: 20px 0;
-        }
+        :root { --accent:#d4af37; --bg:#050505; --card:#0f0f0f; --text:#fff; --text-dim:#888; --border:#222; }
+        body { background:var(--bg); color:var(--text); font-family:Inter,sans-serif; margin:0 }
+        header { padding:40px 20px 20px; text-align:center; position:relative }
+        .logo { font-family:'Cormorant Garamond'; font-size:2.8rem; letter-spacing:10px }
+        .container { max-width:700px; margin:auto; padding:20px }
+        .top-icons { position:absolute; top:20px; right:20px; display:flex; gap:20px }
+        .icon-btn { color:var(--accent); cursor:pointer }
+        .video-wrapper { position:relative; padding-bottom:56.25%; height:0; border:1px solid var(--border); margin-bottom:40px }
+        .video-wrapper iframe { position:absolute; inset:0; width:100%; height:100% }
+        .form-card { background:var(--card); padding:40px; border-top:2px solid var(--accent) }
+        label { font-size:.65rem; letter-spacing:2px; color:var(--text-dim) }
+        input,select { width:100%; background:transparent; border:none; border-bottom:1px solid #333; color:#fff; padding:12px 0 }
+        .check-field { display:flex; gap:12px; margin-bottom:15px }
+        .photo-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+        .upload-box { border:1px solid var(--border); padding:15px; text-align:center; font-size:.6rem; cursor:pointer }
+        .upload-box.done { border-color:var(--accent); color:var(--accent) }
+        .btn-submit { width:100%; padding:18px; margin-top:30px; letter-spacing:4px; cursor:pointer }
+        #admin-panel,#model-portal { display:none; position:fixed; inset:0; background:#000; z-index:2000; overflow-y:auto }
+        .app-row { background:var(--card); padding:20px; margin-bottom:20px; border-left:3px solid var(--accent) }
+        .admin-btn { padding:8px 14px; font-size:.7rem; cursor:pointer }
+        .btn-approve { background:var(--accent) }
+        .btn-delete { background:#600; color:#fff }
+        .haircut-preview { width:100%; border:1px solid var(--accent); margin:20px 0 }
     </style>
 </head>
 
 <body>
 
-<!-- PUBLIC SITE -->
 <div id="public-site">
-    <header>
-        <div class="top-icons">
-            <i class="fas fa-calendar-alt icon-btn" onclick="openPortal()"></i>
-            <i class="fas fa-user-lock icon-btn" onclick="toggleAdmin()"></i>
-        </div>
-        <h1 class="logo">Black Silva</h1>
-    </header>
-
-    <div class="container">
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/Tic_zvXSeRU" allowfullscreen></iframe>
-        </div>
-
-        <div class="form-card">
-            <form id="applicationForm">
-                <label>Full Name</label>
-                <input type="text" id="name" required>
-
-                <label>Email</label>
-                <input type="email" id="email" required>
-
-                <label class="check-field"><input type="checkbox" required>Agree to transformation</label>
-                <label class="check-field"><input type="checkbox" required>Available for filming</label>
-                <label class="check-field"><input type="checkbox" required>Allow image usage</label>
-                <label class="check-field"><input type="checkbox" required>Over 18</label>
-
-                <div class="photo-grid">
-                    <div class="upload-box" id="box_f" onclick="f_img.click()">Front<input id="f_img" type="file" hidden onchange="previewFile('f')"></div>
-                    <div class="upload-box" id="box_s" onclick="s_img.click()">Side<input id="s_img" type="file" hidden onchange="previewFile('s')"></div>
-                    <div class="upload-box" id="box_b" onclick="b_img.click()">Back<input id="b_img" type="file" hidden onchange="previewFile('b')"></div>
-                </div>
-
-                <button class="btn-submit" id="submitBtn">Submit Application</button>
-            </form>
-        </div>
+<header>
+    <div class="top-icons">
+        <i class="fas fa-calendar-alt icon-btn" onclick="openPortal()"></i>
+        <i class="fas fa-user-lock icon-btn" onclick="toggleAdmin()"></i>
     </div>
+    <h1 class="logo">Black Silva</h1>
+</header>
+
+<div class="container">
+<div class="video-wrapper">
+<iframe src="https://www.youtube.com/embed/Tic_zvXSeRU" allowfullscreen></iframe>
 </div>
 
-<!-- MODEL PORTAL -->
+<div class="form-card">
+<form id="applicationForm">
+<label>Full Name</label>
+<input id="name" required>
+
+<label>Email</label>
+<input id="email" type="email" required>
+
+<label class="check-field"><input type="checkbox" required>Agree to transformation</label>
+<label class="check-field"><input type="checkbox" required>Available for filming</label>
+<label class="check-field"><input type="checkbox" required>Allow image usage</label>
+<label class="check-field"><input type="checkbox" required>Over 18</label>
+
+<div class="photo-grid">
+<div class="upload-box" id="box_f" onclick="f_img.click()">Front<input hidden id="f_img" type="file" onchange="previewFile('f')"></div>
+<div class="upload-box" id="box_s" onclick="s_img.click()">Side<input hidden id="s_img" type="file" onchange="previewFile('s')"></div>
+<div class="upload-box" id="box_b" onclick="b_img.click()">Back<input hidden id="b_img" type="file" onchange="previewFile('b')"></div>
+</div>
+
+<button class="btn-submit" id="submitBtn">Submit Application</button>
+</form>
+</div>
+</div>
+</div>
+
 <div id="model-portal">
-    <div class="container">
-        <div id="portal-login">
-            <input type="email" id="loginEmail" placeholder="your@email.com">
-            <button class="admin-btn btn-approve" onclick="checkAccess()">Enter</button>
-            <button class="admin-btn" onclick="closeAll()">Cancel</button>
-        </div>
-
-        <div id="portal-content" style="display:none">
-            <h2 id="welcomeName"></h2>
-            <img class="haircut-preview" src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a">
-
-            <div id="booking-section">
-                <select id="selectedDate">
-                    <option>Monday, Jan 26</option>
-                    <option>Tuesday, Jan 27</option>
-                </select>
-                <select id="selectedTime">
-                    <option>09:00 AM</option>
-                    <option>01:00 PM</option>
-                </select>
-                <button class="btn-submit" onclick="confirmBooking()">Confirm</button>
-            </div>
-
-            <div id="booking-confirmed" style="display:none">
-                <p id="displayBooking"></p>
-            </div>
-
-            <button class="admin-btn" onclick="closeAll()">Logout</button>
-        </div>
-    </div>
+<div class="container">
+<div id="portal-login">
+<input id="loginEmail" type="email" placeholder="your@email.com">
+<button class="admin-btn btn-approve" onclick="checkAccess()">Enter</button>
+<button class="admin-btn" onclick="closeAll()">Cancel</button>
 </div>
 
-<!-- ADMIN PANEL -->
+<div id="portal-content" style="display:none">
+<h2 id="welcomeName"></h2>
+<img class="haircut-preview" src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a">
+<div id="booking-section">
+<select id="selectedDate"><option>Monday, Jan 26</option></select>
+<select id="selectedTime"><option>09:00 AM</option></select>
+<button class="btn-submit" onclick="confirmBooking()">Confirm</button>
+</div>
+<div id="booking-confirmed" style="display:none"><p id="displayBooking"></p></div>
+<button class="admin-btn" onclick="closeAll()">Logout</button>
+</div>
+</div>
+</div>
+
 <div id="admin-panel">
-    <div class="container">
-        <div id="applications-list"></div>
-        <button class="admin-btn" onclick="closeAll()">Close</button>
-    </div>
+<div class="container">
+<div id="applications-list"></div>
+<button class="admin-btn" onclick="closeAll()">Close</button>
+</div>
 </div>
 
 <script>
-function getDB(){ return JSON.parse(localStorage.getItem('bs_apps'))||[] }
-function saveDB(d){ localStorage.setItem('bs_apps',JSON.stringify(d)) }
-
+const getDB=()=>JSON.parse(localStorage.getItem("bs_apps"))||[]
+const saveDB=d=>localStorage.setItem("bs_apps",JSON.stringify(d))
 let currentPhotos={f:null,s:null,b:null}
 let activeUser=null
 
 function previewFile(t){
     const r=new FileReader()
-    r.onload=()=>{currentPhotos[t]=r.result;document.getElementById("box_"+t).classList.add("done")}
-    r.readAsDataURL(document.getElementById(t+"_img").files[0])
-}
-
-function toggleAdmin(){
-    if(prompt("Admin Password")==="Alin1234.!"){
-        admin-panel.style.display="block";loadApplications()
-    }
-}
-
-function openPortal(){ model-portal.style.display="block" }
-
-function closeAll(){
-    admin-panel.style.display="none"
-    model-portal.style.display="none"
-    portal-login.style.display="block"
-    portal-content.style.display="none"
-    booking-section.style.display="block"
-    booking-confirmed.style.display="none"
-    activeUser=null
-}
-
-applicationForm.onsubmit=e=>{
-    e.preventDefault()
-    const db=getDB()
-    db.push({
-        id:Date.now(),
-        name:name.value,
-        email:email.value.toLowerCase(),
-        approved:false,
-        booking:null,
-        photos:{...currentPhotos}
-    })
-    saveDB(db)
-    location.reload()
-}
-
-function loadApplications(){
-    applications-list.innerHTML=""
-    getDB().forEach(a=>{
-        applications-list.innerHTML+=`
-        <div class="app-row">
-            <strong>${a.name}</strong> (${a.email})
-            ${!a.approved?`<button onclick="approveApp(${a.id})">Approve</button>`:""}
-        </div>`
-    })
-}
-
-function approveApp(id){
-    saveDB(getDB().map(a=>a.id===id?{...a,approved:true}:a))
-    loadApplications()
-}
-
-function checkAccess(){
-    const u=getDB().find(x=>x.email===loginEmail.value.toLowerCase())
-    if(!u) return alert("Not found")
-    if(!u.approved) return alert("Not approved yet")
-    activeUser=u
-    portal-login.style.display="none"
-    portal-content.style.display="block"
-    welcomeName.innerText="MUSE: "+u.name
-    if(u.booking) showConfirmed(u.booking)
-}
-
-function confirmBooking(){
-    const booking={day:selectedDate.value,time:selectedTime.value}
-    saveDB(getDB().map(u=>{
-        if(u.email===activeUser.email){
-            activeUser={...u,booking}
-            return activeUser
-        }
-        return u
-    }))
-    showConfirmed(booking)
-}
-
-function showConfirmed(b){
-    booking-section.style.display="none"
-    booking-confirmed.style.display="block"
-    displayBooking.innerText=b.day+" @ "+b.time
-}
-</script>
-
-</body>
-</html>
+    r.onload=()=>{currentPhotos[t]=r.result;box=document.getElementById("box_"+t);box.classList.add("done");box.innerTe_
