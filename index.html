@@ -22,8 +22,13 @@
         .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); margin-bottom: 50px; }
         .field { margin-bottom: 25px; }
         label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
-        input, textarea { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; font-family: 'Inter', sans-serif; }
+        input[type="text"], input[type="email"] { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; font-family: 'Inter', sans-serif; }
         
+        /* Checkbox Styling */
+        .check-field { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; cursor: pointer; }
+        .check-field input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; margin-top: 2px; }
+        .check-label { font-size: 0.85rem; line-height: 1.4; color: #eee; text-transform: none; letter-spacing: 0; }
+
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.3s; position: relative; }
         .upload-box:hover { border-color: var(--accent); color: #fff; }
@@ -74,15 +79,31 @@
                 <div class="field"><label>Email Address</label><input type="email" id="email" required></div>
                 
                 <div style="margin: 40px 0 20px; border-bottom: 1px solid var(--accent); padding-bottom: 10px;">
-                    <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--accent);">QUALIFYING QUESTIONS (Type 'X' to Agree)</span>
+                    <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--accent);">QUALIFYING QUESTIONS</span>
                 </div>
-                <div class="field"><label>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?</label><input type="text" id="q1" placeholder="Type X if you agree" required></div>
-                <div class="field"><label>2. Sed do eiusmod tempor incididunt ut labore et dolore?</label><input type="text" id="q2" placeholder="Type X if you agree" required></div>
-                <div class="field"><label>3. Ut enim ad minim veniam, quis nostrud exercitation?</label><input type="text" id="q3" placeholder="Type X if you agree" required></div>
-                <div class="field"><label>4. Duis aute irure dolor in reprehenderit in voluptate?</label><input type="text" id="q4" placeholder="Type X if you agree" required></div>
-                <div class="field"><label>5. Excepteur sint occaecat cupidatat non proident?</label><input type="text" id="q5" placeholder="Type X if you agree" required></div>
 
-                <div class="field">
+                <label class="check-field">
+                    <input type="checkbox" id="q1" required>
+                    <span class="check-label">1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?</span>
+                </label>
+                <label class="check-field">
+                    <input type="checkbox" id="q2" required>
+                    <span class="check-label">2. Sed do eiusmod tempor incididunt ut labore et dolore?</span>
+                </label>
+                <label class="check-field">
+                    <input type="checkbox" id="q3" required>
+                    <span class="check-label">3. Ut enim ad minim veniam, quis nostrud exercitation?</span>
+                </label>
+                <label class="check-field">
+                    <input type="checkbox" id="q4" required>
+                    <span class="check-label">4. Duis aute irure dolor in reprehenderit in voluptate?</span>
+                </label>
+                <label class="check-field">
+                    <input type="checkbox" id="q5" required>
+                    <span class="check-label">5. Excepteur sint occaecat cupidatat non proident?</span>
+                </label>
+
+                <div class="field" style="margin-top: 30px;">
                     <label>Photos (Front / Side / Back)</label>
                     <div class="photo-grid">
                         <div class="upload-box" id="box_f" onclick="document.getElementById('f_img').click()">Front View<input type="file" id="f_img" style="display:none" accept="image/*" onchange="previewFile('f')"></div>
@@ -148,11 +169,11 @@
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             answers: [
-                document.getElementById('q1').value,
-                document.getElementById('q2').value,
-                document.getElementById('q3').value,
-                document.getElementById('q4').value,
-                document.getElementById('q5').value
+                document.getElementById('q1').checked ? "Agreed" : "Not Agreed",
+                document.getElementById('q2').checked ? "Agreed" : "Not Agreed",
+                document.getElementById('q3').checked ? "Agreed" : "Not Agreed",
+                document.getElementById('q4').checked ? "Agreed" : "Not Agreed",
+                document.getElementById('q5').checked ? "Agreed" : "Not Agreed"
             ],
             photos: { ...currentPhotos },
             date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
@@ -207,11 +228,11 @@
                     <img src="${app.photos.b || 'https://via.placeholder.com/150'}">
                 </div>
                 <div class="q-results">
-                    <div class="q-item"><b>Q1: Lorem Ipsum...</b> Agree: ${app.answers[0]}</div>
-                    <div class="q-item"><b>Q2: Lorem Ipsum...</b> Agree: ${app.answers[1]}</div>
-                    <div class="q-item"><b>Q3: Lorem Ipsum...</b> Agree: ${app.answers[2]}</div>
-                    <div class="q-item"><b>Q4: Lorem Ipsum...</b> Agree: ${app.answers[3]}</div>
-                    <div class="q-item"><b>Q5: Lorem Ipsum...</b> Agree: ${app.answers[4]}</div>
+                    <div class="q-item"><b>Q1: Lorem Ipsum...</b> ${app.answers[0]}</div>
+                    <div class="q-item"><b>Q2: Lorem Ipsum...</b> ${app.answers[1]}</div>
+                    <div class="q-item"><b>Q3: Lorem Ipsum...</b> ${app.answers[2]}</div>
+                    <div class="q-item"><b>Q4: Lorem Ipsum...</b> ${app.answers[3]}</div>
+                    <div class="q-item"><b>Q5: Lorem Ipsum...</b> ${app.answers[4]}</div>
                 </div>
             `;
             list.appendChild(row);
