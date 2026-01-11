@@ -144,7 +144,15 @@
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
+    // CORE LOGIC: Initialize data
+    function getDB() {
+        return JSON.parse(localStorage.getItem('bs_apps')) || [];
+    }
+    
+    function saveDB(data) {
+        localStorage.setItem('bs_apps', JSON.stringify(data));
+    }
+
     let currentPhotos = { f: null, s: null, b: null };
     let activeUser = null;
 
@@ -174,12 +182,14 @@
         document.getElementById('portal-content').style.display = 'none';
     }
 
+    // Handle Application Submission
     document.getElementById('applicationForm').onsubmit = function(e) {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         btn.innerText = "UPLOADING...";
         btn.disabled = true;
 
+        const db = getDB();
         const newApp = {
             id: Date.now(),
             name: document.getElementById('name').value,
@@ -191,27 +201,32 @@
         };
 
         db.push(newApp);
-        localStorage.setItem('bs_apps', JSON.stringify(db));
+        saveDB(db);
         btn.innerText = "SUCCESS ✓";
         btn.classList.add('success');
         setTimeout(() => location.reload(), 1500);
     };
 
+    // Admin Panel Actions
     function approveApp(id) {
+        let db = getDB();
         db = db.map(app => app.id === id ? {...app, approved: true} : app);
-        localStorage.setItem('bs_apps', JSON.stringify(db));
+        saveDB(db);
+        alert("Model approved! They can now log in.");
         loadApplications();
     }
 
     function deleteApp(id) {
         if(confirm("Permanently delete this application?")) {
+            let db = getDB();
             db = db.filter(app => app.id !== id);
-            localStorage.setItem('bs_apps', JSON.stringify(db));
+            saveDB(db);
             loadApplications();
         }
     }
 
     function loadApplications() {
+        const db = getDB();
         const list = document.getElementById('applications-list');
         list.innerHTML = db.length ? "" : "<p style='color:#555;'>No applications yet.</p>";
         [...db].reverse().forEach(app => {
@@ -221,7 +236,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                     <div>
                         <h3 style="margin:0; color:var(--accent);">${app.name}</h3>
-                        <small style="color:#aaa;">${app.email} • Submitted: ${app.date}</small>
+                        <small style="color:#aaa;">${app.email}</small>
                         <div style="margin-top:10px; font-weight:bold;">
                             STATUS: ${app.approved ? '<span style="color:#28a745">APPROVED</span>' : '<span style="color:#d4af37">PENDING</span>'}
                         </div>
@@ -237,16 +252,18 @@
                 </div>
 
                 <div class="admin-photo-display" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
-                    <img src="${app.photos.f || 'https://via.placeholder.com/150?text=No+Front'}">
-                    <img src="${app.photos.s || 'https://via.placeholder.com/150?text=No+Side'}">
-                    <img src="${app.photos.b || 'https://via.placeholder.com/150?text=No+Back'}">
+                    <img src="${app.photos.f || 'https://via.placeholder.com/150'}">
+                    <img src="${app.photos.s || 'https://via.placeholder.com/150'}">
+                    <img src="${app.photos.b || 'https://via.placeholder.com/150'}">
                 </div>
             `;
             list.appendChild(row);
         });
     }
 
+    // Portal Access Logic
     function checkAccess() {
+        const db = getDB();
         const emailInput = document.getElementById('loginEmail').value.toLowerCase().trim();
         const user = db.find(u => u.email === emailInput);
 
@@ -254,6 +271,8 @@
             alert("Email not found. Please apply first.");
             return;
         }
+
+        // Check approval status from database
         if (!user.approved) {
             alert("Your application is still under review. Check back soon!");
             return;
@@ -270,13 +289,14 @@
     }
 
     function confirmBooking() {
+        let db = getDB();
         const bookingData = {
             day: document.getElementById('selectedDate').value,
             time: document.getElementById('selectedTime').value
         };
         
         db = db.map(u => u.email === activeUser.email ? {...u, booking: bookingData} : u);
-        localStorage.setItem('bs_apps', JSON.stringify(db));
+        saveDB(db);
         showConfirmed(bookingData);
     }
 
