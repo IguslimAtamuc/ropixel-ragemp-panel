@@ -12,6 +12,7 @@
             --card: #0f0f0f;
             --text: #ffffff;
             --text-dim: #888;
+            --border: #222;
         }
 
         body {
@@ -23,7 +24,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Luxury Header */
         header {
             padding: 60px 20px 20px;
             text-align: center;
@@ -37,7 +37,7 @@
             margin: 0;
         }
 
-        /* Intro Video Section (Admin/You) */
+        /* Video Section */
         .intro-container {
             max-width: 900px;
             margin: 0 auto 60px;
@@ -46,34 +46,24 @@
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            border: 1px solid #222;
+            border: 1px solid var(--border);
             background: #000;
         }
 
-        .video-wrapper video {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
         }
 
-        .intro-title {
-            font-family: 'Cormorant Garamond', serif;
-            text-align: center;
-            font-size: 1.5rem;
-            margin-top: 20px;
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        /* Application Form */
+        /* Form Layout */
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -95,9 +85,7 @@
             text-align: center;
         }
 
-        .field {
-            margin-bottom: 30px;
-        }
+        .field { margin-bottom: 30px; }
 
         label {
             display: block;
@@ -108,7 +96,7 @@
             color: var(--text-dim);
         }
 
-        input, select, textarea {
+        input, select {
             width: 100%;
             background: transparent;
             border: none;
@@ -116,28 +104,50 @@
             color: #fff;
             padding: 12px 0;
             font-size: 1rem;
-            font-family: 'Inter', sans-serif;
             outline: none;
-            transition: 0.3s;
         }
 
-        input:focus { border-bottom-color: var(--accent); }
+        /* Multi-Photo Upload Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-        /* Custom File Upload Button */
         .upload-box {
-            border: 1px solid #222;
-            padding: 20px;
+            border: 1px solid var(--border);
+            padding: 15px 5px;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.6rem;
+            text-transform: uppercase;
             cursor: pointer;
             color: var(--text-dim);
             transition: 0.3s;
         }
 
-        .upload-box:hover {
-            border-color: var(--accent);
-            color: #fff;
+        .upload-box:hover { border-color: var(--accent); color: #fff; }
+
+        /* Terms & Conditions */
+        .terms-box {
+            height: 100px;
+            overflow-y: scroll;
+            background: #000;
+            padding: 15px;
+            font-size: 0.7rem;
+            color: #555;
+            border: 1px solid var(--border);
+            margin-bottom: 15px;
         }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .checkbox-group input { width: auto; margin-right: 10px; }
 
         .btn-submit {
             width: 100%;
@@ -150,19 +160,14 @@
             text-transform: uppercase;
             letter-spacing: 5px;
             cursor: pointer;
-            margin-top: 20px;
-            transition: 0.3s;
+            margin-top: 30px;
         }
 
-        .btn-submit:hover {
-            background: var(--accent);
-            color: #fff;
-        }
+        .btn-submit:hover { background: var(--accent); color: #fff; }
 
-        /* Mobile Optimization */
         @media (max-width: 600px) {
+            .photo-grid { grid-template-columns: 1fr; }
             .logo { font-size: 2rem; }
-            .form-card { padding: 25px; }
         }
     </style>
 </head>
@@ -174,45 +179,61 @@
 
 <div class="intro-container">
     <div class="video-wrapper">
-        <video controls poster="thumbnail.jpg">
-            <source src="your-introduction.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <iframe src="https://www.youtube.com/embed/Tic_zvXSeRU" frameborder="0" allowfullscreen></iframe>
     </div>
-    <p class="intro-title">A Message from the Stylist</p>
+    <p style="text-align:center; font-style:italic; color:var(--accent); margin-top:15px;">Program Introduction by Black Silva</p>
 </div>
 
 <div class="container">
     <div class="form-card">
-        <span class="section-label">Model Application</span>
+        <span class="section-label">Apply to be a Muse</span>
         
-        <form action="#" method="POST" enctype="multipart/form-data">
+        <form action="mailto:your-email@example.com" method="POST" enctype="multipart/form-data">
             
             <div class="field">
                 <label>Full Name</label>
-                <input type="text" placeholder="Your Name" required>
+                <input type="text" name="name" required>
             </div>
 
             <div class="field">
-                <label>The Session</label>
-                <select required>
-                    <option value="" disabled selected>Select Look</option>
-                    <option value="crop">Textured Crop - Jan 20</option>
-                    <option value="fade">Precision Fade - Jan 22</option>
+                <label>Desired Session</label>
+                <select name="session">
+                    <option value="textured-crop">Textured Crop</option>
+                    <option value="precision-fade">Precision Fade</option>
                 </select>
             </div>
 
             <div class="field">
-                <label>Your Current Hair (Photo)</label>
-                <div class="upload-box" onclick="document.getElementById('photo').click()">
-                    Click to Upload Photo
-                    <input type="file" id="photo" style="display:none" accept="image/*">
+                <label>Upload Required Photos (Front / Side / Back)</label>
+                <div class="photo-grid">
+                    <div class="upload-box" onclick="document.getElementById('front').click()">
+                        Front View
+                        <input type="file" id="front" name="photo_front" style="display:none" accept="image/*" required>
+                    </div>
+                    <div class="upload-box" onclick="document.getElementById('side').click()">
+                        Side View
+                        <input type="file" id="side" name="photo_side" style="display:none" accept="image/*" required>
+                    </div>
+                    <div class="upload-box" onclick="document.getElementById('back').click()">
+                        Back View
+                        <input type="file" id="back" name="photo_back" style="display:none" accept="image/*" required>
+                    </div>
                 </div>
             </div>
 
             <div class="field">
-                <label>Desired Date & Time</label>
-                <input type="datetime-local">
+                <label>Preferred Date & Time</label>
+                <input type="datetime-local" name="date">
+            </div>
+
+            <label>Terms & Conditions</label>
+            <div class="terms-box">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" required>
+                <span>I agree to the terms and understand this is a professional hair modeling session.</span>
             </div>
 
             <button type="submit" class="btn-submit">Submit Application</button>
