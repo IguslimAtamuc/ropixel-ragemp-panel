@@ -1,150 +1,357 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Black Silva | Exclusive Model Call</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
+
         :root { --accent: #d4af37; --bg: #050505; --card: #0f0f0f; --text: #ffffff; --text-dim: #888; --border: #222; }
+
         body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
-        header { padding: 60px 20px 20px; text-align: center; }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; letter-spacing: 10px; text-transform: uppercase; margin: 0; }
-        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
-        .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); }
-        .field { margin-bottom: 25px; }
-        label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
-        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
+
         
-        /* Photo Grid Styling */
+
+        /* Public Site Layout */
+
+        header { padding: 60px 20px 20px; text-align: center; }
+
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; letter-spacing: 10px; text-transform: uppercase; margin: 0; }
+
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+
+
+
+        /* Shape Styling */
+
+        .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); }
+
+        .field { margin-bottom: 25px; }
+
+        label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
+
+        input, select { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
+
+        
+
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.3s; position: relative; overflow: hidden; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+
+        .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.3s; }
+
         .upload-box:hover { border-color: var(--accent); color: #fff; }
-        .upload-box.has-file { border-color: var(--accent); color: var(--accent); background: rgba(212, 175, 55, 0.05); }
+
+
 
         .btn-submit { width: 100%; background: var(--text); color: #000; border: none; padding: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px; cursor: pointer; margin-top: 30px; }
-        .admin-trigger { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--card); border: 1px solid var(--accent); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 1000; }
-        
-        /* Admin Panel Items */
-        #admin-panel { display: none; padding: 60px 20px; background: #000; min-height: 100vh; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; }
-        .app-row { background: var(--card); padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; border-left: 3px solid var(--accent); }
-        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .admin-img-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
-        .admin-thumb { width: 100%; height: 120px; object-fit: cover; border: 1px solid #333; border-radius: 2px; }
-        .admin-btn { background: var(--text); color: #000; border: none; padding: 10px 20px; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
 
-        @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr; } }
+        .btn-submit:hover { background: var(--accent); color: #fff; }
+
+
+
+        /* Admin Avatar with Lock */
+
+        .admin-trigger {
+
+            position: fixed;
+
+            bottom: 20px;
+
+            right: 20px;
+
+            width: 50px;
+
+            height: 50px;
+
+            background: var(--card);
+
+            border: 1px solid var(--accent);
+
+            border-radius: 50%;
+
+            display: flexible;
+
+            justify-content: center;
+
+            align-items: center;
+
+            cursor: pointer;
+
+            z-index: 1000;
+
+            transition: 0.3s;
+
+        }
+
+        .admin-trigger:hover { transform: scale(1.1); background: #111; }
+
+        .admin-trigger i { color: var(--accent); font-size: 1.2rem; }
+
+
+
+        /* Admin Panel Styling */
+
+        #admin-panel { display: none; padding: 60px 20px; background: #000; min-height: 100vh; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; }
+
+        .app-row { background: var(--card); padding: 25px; border: 1px solid var(--border); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--accent); }
+
+        .app-info h3 { margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; letter-spacing: 1px; }
+
+        .app-info p { color: var(--text-dim); font-size: 0.85rem; margin: 8px 0; }
+
+        .admin-btn { background: var(--text); color: #000; border: none; padding: 12px 25px; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+
+        .admin-btn:hover { background: var(--accent); colour: white; }
+
+
+
+        @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr; } .app-row { flex-direction: column; align-items: flex-start; gap: 15px; } .logo { font-size: 2rem; } }
+
     </style>
+
 </head>
+
 <body>
 
+
+
 <div id="public-site">
-    <header><h1 class="logo">Black Silva</h1></header>
-    <div class="container">
-        <div class="form-card">
-            <span style="text-align:center; display:block; color:var(--accent); letter-spacing:4px; font-size:0.75rem; margin-bottom:30px;">APPLY TO BE A MUSE</span>
-            <form id="applicationForm">
-                <div class="field"><label>Full Name</label><input type="text" id="name" required></div>
-                <div class="field"><label>Email Address</label><input type="email" id="email" required></div>
-                <div class="field">
-                    <label>Photos (Front / Side / Back)</label>
-                    <div class="photo-grid">
-                        <div class="upload-box" id="box-f" onclick="document.getElementById('f_img').click()">Front View<input type="file" id="f_img" style="display:none" accept="image/*" onchange="updateStatus('f')"></div>
-                        <div class="upload-box" id="box-s" onclick="document.getElementById('s_img').click()">Side View<input type="file" id="s_img" style="display:none" accept="image/*" onchange="updateStatus('s')"></div>
-                        <div class="upload-box" id="box-b" onclick="document.getElementById('b_img').click()">Back View<input type="file" id="b_img" style="display:none" accept="image/*" onchange="updateStatus('b')"></div>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">Submit Application</button>
-            </form>
+
+    <header>
+
+        <h1 class="logo">Black Silva</h1>
+
+    </header>
+
+
+
+    <div class="intro-container container">
+
+        <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:1px solid var(--border);">
+
+            <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/Tic_zvXSeRU" frameborder="0" allowfullscreen></iframe>
+
         </div>
+
+        <p style="text-align:center; font-style:italic; color:var(--accent); margin-top:15px; font-size: 0.9rem;">The Model Program Introduction</p>
+
     </div>
-    <div class="admin-trigger" onclick="toggleAdmin()"><i class="fas fa-user-lock"></i></div>
+
+
+
+    <div class="container">
+
+        <div class="form-card">
+
+            <span style="text-align:center; display:block; color:var(--accent); letter-spacing:4px; font-size:0.75rem; margin-bottom:30px; font-weight:500;">APPLY TO BE A MUSE</span>
+
+            <form id="applicationForm">
+
+                <div class="field"><label>Full Name</label><input type="text" id="name" placeholder="Enter name" required></div>
+
+                <div class="field"><label>Email Address</label><input type="email" id="email" placeholder="email@example.com" required></div>
+
+                <div class="field">
+
+                    <label>Photos (Front / Side / Back)</label>
+
+                    <div class="photo-grid">
+
+                        <div class="upload-box" onclick="document.getElementById('f_img').click()">Front View<input type="file" id="f_img" style="display:none" accept="image/*"></div>
+
+                        <div class="upload-box" onclick="document.getElementById('s_img').click()">Side View<input type="file" id="s_img" style="display:none" accept="image/*"></div>
+
+                        <div class="upload-box" onclick="document.getElementById('b_img').click()">Back View<input type="file" id="b_img" style="display:none" accept="image/*"></div>
+
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Application</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="admin-trigger" onclick="toggleAdmin()">
+
+        <i class="fas fa-user-lock"></i>
+
+    </div>
+
 </div>
+
+
 
 <div id="admin-panel">
+
     <div class="container">
-        <div style="display:flex; justify-content:space-between; margin-bottom:40px;">
-            <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">APPLICANT LOG</h2>
-            <button onclick="logout()" style="background:none; border:1px solid #333; color:#888; cursor:pointer;">Exit</button>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+
+            <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px; margin:0;">APPLICATIONS</h2>
+
+            <button onclick="logout()" style="background:none; border:1px solid #333; color:#888; cursor:pointer; padding: 10px;">Close Panel</button>
+
         </div>
-        <div id="applications-list"></div>
+
+        <div id="applications-list">
+
+            <p style="color:var(--text-dim)">No applications found.</p>
+
+        </div>
+
     </div>
+
 </div>
 
+
+
 <script>
+
+    // Database logic using LocalStorage
+
     let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
 
-    // Helper to visually show a file was selected
-    function updateStatus(id) {
-        document.getElementById('box-' + id).classList.add('has-file');
-        document.getElementById('box-' + id).innerText = id.toUpperCase() + " LOADED";
+
+
+    function toggleAdmin() {
+
+        const pass = prompt("Access Restricted. Enter Password:");
+
+        if(pass === "Alin1234.!") { 
+
+            document.getElementById('public-site').style.display = 'none';
+
+            document.getElementById('admin-panel').style.display = 'block';
+
+            loadApplications();
+
+        } else if (pass !== null) {
+
+            alert("Incorrect Credentials.");
+
+        }
+
     }
 
-    // Helper to convert images to text for saving
-    const toBase64 = file => new Promise((resolve, reject) => {
-        if (!file) resolve(null);
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
 
-    document.getElementById('applicationForm').onsubmit = async function(e) {
+
+    function logout() {
+
+        document.getElementById('public-site').style.display = 'block';
+
+        document.getElementById('admin-panel').style.display = 'none';
+
+    }
+
+
+
+    // Handle Form Submission
+
+    document.getElementById('applicationForm').onsubmit = function(e) {
+
         e.preventDefault();
-        
-        // Convert the 3 images to text strings
-        const imgF = await toBase64(document.getElementById('f_img').files[0]);
-        const imgS = await toBase64(document.getElementById('s_img').files[0]);
-        const imgB = await toBase64(document.getElementById('b_img').files[0]);
 
         const newApp = {
+
             name: document.getElementById('name').value,
+
             email: document.getElementById('email').value,
-            imgF, imgS, imgB,
-            date: new Date().toLocaleDateString()
+
+            date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+
         };
 
         db.push(newApp);
+
         localStorage.setItem('bs_apps', JSON.stringify(db));
-        alert("Application Submitted.");
-        location.reload(); // Reset everything
+
+        alert("Your application has been submitted to Black Silva.");
+
+        this.reset();
+
     };
 
-    function toggleAdmin() {
-        if(prompt("Password:") === "Alin1234.!") {
-            document.getElementById('public-site').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
-            loadApplications();
-        }
-    }
 
-    function logout() { location.reload(); }
 
     function loadApplications() {
+
         const list = document.getElementById('applications-list');
-        list.innerHTML = db.length ? "" : "<p>No entries found.</p>";
+
+        list.innerHTML = "";
+
         
+
+        if(db.length === 0) {
+
+            list.innerHTML = "<p style='color:var(--text-dim)'>No models have applied yet.</p>";
+
+            return;
+
+        }
+
+        
+
+        // Reverse to see newest first
+
         [...db].reverse().forEach((app) => {
+
             const row = document.createElement('div');
+
             row.className = 'app-row';
+
             row.innerHTML = `
-                <div class="app-header">
-                    <div>
-                        <h3 style="margin:0">${app.name}</h3>
-                        <small style="color:var(--accent)">${app.date} | ${app.email}</small>
-                    </div>
-                    <button class="admin-btn" onclick="window.location.href='mailto:${app.email}'">Contact</button>
+
+                <div class="app-info">
+
+                    <h3>${app.name}</h3>
+
+                    <p><i class="far fa-envelope"></i> ${app.email}</p>
+
+                    <p style="font-size:0.7rem; color:var(--accent)"><i class="far fa-calendar"></i> Submitted: ${app.date}</p>
+
                 </div>
-                <div class="admin-img-group">
-                    <img src="${app.imgF || ''}" class="admin-thumb" alt="No Front">
-                    <img src="${app.imgS || ''}" class="admin-thumb" alt="No Side">
-                    <img src="${app.imgB || ''}" class="admin-thumb" alt="No Back">
-                </div>
+
+                <button class="admin-btn" onclick="sendEmail('${app.email}', '${app.name}')">Review & Email</button>
+
             `;
+
             list.appendChild(row);
+
         });
+
     }
+
+
+
+    function sendEmail(email, name) {
+
+        const subject = encodeURIComponent("Black Silva | Your Model Application");
+
+        const body = encodeURIComponent(`Hello ${name},\n\nThank you for applying to the Black Silva Model Program. We have reviewed your photos and would like to invite you for a session...`);
+
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+
+    }
+
 </script>
+
+
+
 </body>
+
 </html>
