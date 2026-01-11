@@ -2,138 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PureStream - Background Play</title>
+    <title>Black Silva | Model Application</title>
     <style>
-        body { font-family: sans-serif; background: #121212; color: white; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; }
-        #status { font-size: 0.8em; color: #00ff00; margin-bottom: 10px; opacity: 0.8; }
-        #search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 12px; border-radius: 5px; border: none; outline: none; background: #222; color: white; }
-        button { padding: 12px 20px; cursor: pointer; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; }
-        .video-card { display: flex; gap: 15px; margin-bottom: 15px; background: #1e1e1e; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .video-card:hover { background: #2a2a2a; }
-        .video-card img { width: 120px; border-radius: 5px; object-fit: cover; }
-        #player-container { position: sticky; top: 0; background: #121212; padding: 10px 0 20px 0; display: none; z-index: 100; }
-        video { width: 100%; border-radius: 10px; background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .loading { text-align: center; color: #aaa; margin-top: 20px; }
+        body { background-color: #000; color: #fff; font-family: 'Helvetica', sans-serif; text-align: center; }
+        .container { max-width: 800px; margin: auto; padding: 50px; }
+        h1 { letter-spacing: 5px; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 20px; }
+        .form-group { margin: 20px 0; text-align: left; }
+        input, select, textarea { width: 100%; padding: 10px; background: #111; border: 1px solid #444; color: white; }
+        .btn { background: #fff; color: #000; padding: 15px 30px; border: none; cursor: pointer; font-weight: bold; }
+        .calendar-embed { height: 600px; background: #1a1a1a; margin: 20px 0; border: 1px solid #333; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>PureStream</h2>
-    <div id="status">Checking connection...</div>
-    
-    <div id="player-container">
-        <video id="main-player" controls playsinline></video>
-        <h3 id="playing-title" style="font-size: 1.1em; margin-top: 10px;"></h3>
-    </div>
+    <h1>Black Silva</h1>
+    <p>Apply for our next creative session.</p>
 
-    <div id="search-box">
-        <input type="text" id="query" placeholder="Search for songs (e.g. 50 Cent)...">
-        <button id="search-btn" onclick="search()">Search</button>
-    </div>
+    <form action="YOUR_BACKEND_LINK" method="POST">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name" required>
+        </div>
 
-    <div id="results"></div>
+        <div class="form-group">
+            <label>Selected Haircut Style</label>
+            <select name="haircut">
+                <option value="textured-crop">Textured Crop (Session Jan 20)</option>
+                <option value="platinum-buzz">Platinum Buzz (Session Jan 22)</option>
+                <option value="modern-mullet">Modern Mullet (Session Jan 25)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Upload Current Hair Photo (Link or File)</label>
+            <input type="file" name="hair_photo">
+        </div>
+
+        <div class="form-group">
+            <label>Select Your Available Slot</label>
+            <div class="calendar-embed">
+                <p style="padding-top: 250px;">[ Interactive Calendar Embed Goes Here ]</p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">SUBMIT APPLICATION</button>
+    </form>
 </div>
-
-<script>
-    // Updated list of reliable instances
-    const instances = [
-        "https://iv.ggtyler.dev",
-        "https://inv.nadeko.net",
-        "https://invidious.flokinet.to",
-        "https://inv.tux.pizza"
-    ];
-
-    // This proxy is essential for GitHub Pages to bypass CORS blocks
-    const proxy = "https://corsproxy.io/?"; 
-    let currentInstanceIndex = 0;
-
-    function updateStatus() {
-        const statusDiv = document.getElementById('status');
-        statusDiv.innerText = `Connected via: ${instances[currentInstanceIndex].split('//')[1]}`;
-    }
-
-    async function search() {
-        const query = document.getElementById('query').value;
-        const resultsDiv = document.getElementById('results');
-        const btn = document.getElementById('search-btn');
-
-        if (!query) return;
-
-        btn.innerText = "...";
-        resultsDiv.innerHTML = '<div class="loading">Bypassing security filters...</div>';
-
-        try {
-            const currentInstance = instances[currentInstanceIndex];
-            // Wrapping the API call in the proxy
-            const apiUrl = `${currentInstance}/api/v1/search?q=${encodeURIComponent(query)}`;
-            const response = await fetch(proxy + encodeURIComponent(apiUrl));
-            
-            if (!response.ok) throw new Error("Blocked");
-
-            const data = await response.json();
-            renderResults(data);
-            updateStatus();
-            btn.innerText = "Search";
-
-        } catch (error) {
-            console.warn(`Server ${instances[currentInstanceIndex]} blocked or busy. Rotating...`);
-            currentInstanceIndex = (currentInstanceIndex + 1) % instances.length;
-            
-            if (currentInstanceIndex === 0) {
-                resultsDiv.innerHTML = '<div style="color:red; padding:20px;">All servers failed. Try refreshing the page in a moment.</div>';
-                btn.innerText = "Search";
-            } else {
-                search(); 
-            }
-        }
-    }
-
-    function renderResults(data) {
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = '';
-
-        data.forEach(item => {
-            if (item.type === 'video') {
-                const card = document.createElement('div');
-                card.className = 'video-card';
-                // Using proxy for thumbnails to ensure they load on GitHub
-                const thumb = proxy + encodeURIComponent(item.videoThumbnails[0].url);
-                card.innerHTML = `
-                    <img src="${thumb}">
-                    <div>
-                        <strong>${item.title}</strong>
-                        <p style="font-size: 0.8em; color: #aaa;">${item.author}</p>
-                    </div>
-                `;
-                card.onclick = () => playVideo(item.videoId, item.title);
-                resultsDiv.appendChild(card);
-            }
-        });
-    }
-
-    function playVideo(id, title) {
-        const playerContainer = document.getElementById('player-container');
-        const player = document.getElementById('main-player');
-        const titleLabel = document.getElementById('playing-title');
-        
-        playerContainer.style.display = 'block';
-        titleLabel.innerText = title;
-        
-        // This itag=18 stream works best for mobile background playback
-        player.src = `${instances[currentInstanceIndex]}/latest_version?id=${id}&itag=18`; 
-        player.play();
-        
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    updateStatus();
-</script>
 
 </body>
 </html>
-
-
