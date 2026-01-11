@@ -14,11 +14,11 @@
         .logo { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; letter-spacing: 10px; text-transform: uppercase; margin: 0; }
         .container { max-width: 700px; margin: 0 auto; padding: 20px; }
 
-        /* Form Styling */
-        .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); }
+        .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); margin-bottom: 50px; }
         .field { margin-bottom: 25px; }
         label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
-        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
+        input, textarea { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; font-family: 'Inter', sans-serif; }
+        textarea { border: 1px solid #333; padding: 10px; margin-top: 5px; resize: none; }
         
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.3s; position: relative; }
@@ -27,31 +27,27 @@
 
         .btn-submit { width: 100%; background: var(--text); color: #000; border: none; padding: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px; cursor: pointer; margin-top: 30px; transition: 0.3s; }
         .btn-submit:hover { background: var(--accent); color: #fff; }
-        .btn-submit:disabled { opacity: 0.8; cursor: not-allowed; }
-        .btn-submit.success { background: var(--accent); color: #fff; }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-submit.success { background: #28a745; color: #fff; }
 
-        /* Admin Trigger */
         .admin-trigger { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--card); border: 1px solid var(--accent); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 1000; transition: 0.3s; }
-        .admin-trigger:hover { transform: scale(1.1); background: #111; }
         .admin-trigger i { color: var(--accent); font-size: 1.2rem; }
 
-        /* Admin Panel */
         #admin-panel { display: none; padding: 60px 20px; background: #000; min-height: 100vh; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 2000; }
         .app-row { background: var(--card); padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; border-left: 3px solid var(--accent); }
         .app-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-        .app-info h3 { margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; letter-spacing: 1px; }
         
         .admin-photo-display { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .admin-photo-display img { width: 100%; height: 150px; object-fit: cover; border: 1px solid #222; border-radius: 2px; }
+        .admin-photo-display img { width: 100%; height: 120px; object-fit: cover; border: 1px solid #222; }
         
-        .admin-actions { display: flex; gap: 10px; }
-        .admin-btn { background: var(--text); color: #000; border: none; padding: 10px 20px; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-delete { background: #600; color: #fff; }
+        .q-results { background: #000; padding: 15px; margin-top: 15px; border-radius: 4px; font-size: 0.8rem; }
+        .q-item { margin-bottom: 10px; border-bottom: 1px solid #111; padding-bottom: 5px; }
+        .q-item b { color: var(--accent); display: block; margin-bottom: 3px; font-size: 0.7rem; text-transform: uppercase; }
 
-        @media (max-width: 600px) { 
-            .photo-grid, .admin-photo-display { grid-template-columns: 1fr; } 
-            .app-header { flex-direction: column; gap: 15px; }
-        }
+        .admin-btn { background: var(--text); color: #000; border: none; padding: 10px 20px; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .btn-delete { background: #600; color: #fff; margin-left: 10px; }
+
+        @media (max-width: 600px) { .photo-grid, .admin-photo-display { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -59,19 +55,23 @@
 <div id="public-site">
     <header><h1 class="logo">Black Silva</h1></header>
 
-    <div class="intro-container container">
-        <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:1px solid var(--border);">
-            <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/Tic_zvXSeRU" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </div>
-
     <div class="container">
         <div class="form-card">
             <span style="text-align:center; display:block; color:var(--accent); letter-spacing:4px; font-size:0.75rem; margin-bottom:30px; font-weight:500;">APPLY TO BE A MUSE</span>
+            
             <form id="applicationForm">
                 <div class="field"><label>Full Name</label><input type="text" id="name" required></div>
                 <div class="field"><label>Email Address</label><input type="email" id="email" required></div>
                 
+                <div style="margin: 40px 0 20px; border-bottom: 1px solid var(--accent); padding-bottom: 10px;">
+                    <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--accent);">QUALIFYING QUESTIONS</span>
+                </div>
+                <div class="field"><label>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?</label><textarea id="q1" rows="2" required></textarea></div>
+                <div class="field"><label>2. Sed do eiusmod tempor incididunt ut labore et dolore?</label><textarea id="q2" rows="2" required></textarea></div>
+                <div class="field"><label>3. Ut enim ad minim veniam, quis nostrud exercitation?</label><textarea id="q3" rows="2" required></textarea></div>
+                <div class="field"><label>4. Duis aute irure dolor in reprehenderit in voluptate?</label><textarea id="q4" rows="2" required></textarea></div>
+                <div class="field"><label>5. Excepteur sint occaecat cupidatat non proident?</label><textarea id="q5" rows="2" required></textarea></div>
+
                 <div class="field">
                     <label>Photos (Front / Side / Back)</label>
                     <div class="photo-grid">
@@ -85,7 +85,6 @@
             </form>
         </div>
     </div>
-
     <div class="admin-trigger" onclick="toggleAdmin()"><i class="fas fa-user-lock"></i></div>
 </div>
 
@@ -103,7 +102,6 @@
     let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
     let currentPhotos = { f: null, s: null, b: null };
 
-    // Function to convert images to Base64
     function previewFile(type) {
         const file = document.getElementById(type + '_img').files[0];
         const reader = new FileReader();
@@ -116,7 +114,7 @@
     }
 
     function toggleAdmin() {
-        const pass = prompt("Access Restricted. Enter Password:");
+        const pass = prompt("Access Restricted:");
         if(pass === "Alin1234.!") { 
             document.getElementById('public-site').style.display = 'none';
             document.getElementById('admin-panel').style.display = 'block';
@@ -132,8 +130,6 @@
     document.getElementById('applicationForm').onsubmit = function(e) {
         e.preventDefault();
         const submitBtn = document.getElementById('submitBtn');
-        
-        // Disable button and change text
         submitBtn.innerText = "UPLOADING...";
         submitBtn.disabled = true;
 
@@ -141,35 +137,36 @@
             id: Date.now(),
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
+            answers: [
+                document.getElementById('q1').value,
+                document.getElementById('q2').value,
+                document.getElementById('q3').value,
+                document.getElementById('q4').value,
+                document.getElementById('q5').value
+            ],
             photos: { ...currentPhotos },
-            date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
         };
 
-        // Try to save to database
         try {
             db.push(newApp);
             localStorage.setItem('bs_apps', JSON.stringify(db));
-            
-            // UI Feedback: Success state
             submitBtn.innerText = "SUCCESS ✓";
             submitBtn.classList.add('success');
-
-            // Wait 1.5 seconds before reloading so user sees success and data finishes saving
+            
             setTimeout(() => {
-                alert("Application submitted successfully.");
+                alert("Application received.");
                 location.reload(); 
-            }, 1000);
-
-        } catch (error) {
-            console.error(error);
-            alert("Error: Your photos might be too large for the browser memory. Please try smaller images.");
-            submitBtn.innerText = "SUBMIT APPLICATION";
+            }, 800);
+        } catch (e) {
+            alert("Storage full. Please use smaller photos.");
             submitBtn.disabled = false;
+            submitBtn.innerText = "Submit Application";
         }
     };
 
     function deleteApp(id) {
-        if(confirm("Delete this application?")) {
+        if(confirm("Delete application?")) {
             db = db.filter(app => app.id !== id);
             localStorage.setItem('bs_apps', JSON.stringify(db));
             loadApplications();
@@ -178,42 +175,37 @@
 
     function loadApplications() {
         const list = document.getElementById('applications-list');
-        list.innerHTML = "";
-        
-        if(db.length === 0) {
-            list.innerHTML = "<p style='color:var(--text-dim)'>No models have applied yet.</p>";
-            return;
-        }
+        list.innerHTML = db.length === 0 ? "<p>No applications.</p>" : "";
         
         [...db].reverse().forEach((app) => {
             const row = document.createElement('div');
             row.className = 'app-row';
             row.innerHTML = `
                 <div class="app-header">
-                    <div class="app-info">
-                        <h3>${app.name}</h3>
-                        <p><i class="far fa-envelope"></i> ${app.email}</p>
-                        <p style="font-size:0.7rem; color:var(--accent)"><i class="far fa-calendar"></i> ${app.date}</p>
+                    <div>
+                        <h3 style="margin:0">${app.name}</h3>
+                        <small style="color:var(--accent)">${app.email} | ${app.date}</small>
                     </div>
-                    <div class="admin-actions">
-                        <button class="admin-btn" onclick="sendEmail('${app.email}', '${app.name}')">Email</button>
+                    <div>
+                        <button class="admin-btn" onclick="window.location.href='mailto:${app.email}'">Email</button>
                         <button class="admin-btn btn-delete" onclick="deleteApp(${app.id})">Delete</button>
                     </div>
                 </div>
                 <div class="admin-photo-display">
-                    <img src="${app.photos.f || 'https://via.placeholder.com/150?text=No+Photo'}" alt="Front">
-                    <img src="${app.photos.s || 'https://via.placeholder.com/150?text=No+Photo'}" alt="Side">
-                    <img src="${app.photos.b || 'https://via.placeholder.com/150?text=No+Photo'}" alt="Back">
+                    <img src="${app.photos.f || 'https://via.placeholder.com/150'}">
+                    <img src="${app.photos.s || 'https://via.placeholder.com/150'}">
+                    <img src="${app.photos.b || 'https://via.placeholder.com/150'}">
+                </div>
+                <div class="q-results">
+                    <div class="q-item"><b>Q1: Lorem Ipsum...</b> ${app.answers[0]}</div>
+                    <div class="q-item"><b>Q2: Lorem Ipsum...</b> ${app.answers[1]}</div>
+                    <div class="q-item"><b>Q3: Lorem Ipsum...</b> ${app.answers[2]}</div>
+                    <div class="q-item"><b>Q4: Lorem Ipsum...</b> ${app.answers[3]}</div>
+                    <div class="q-item"><b>Q5: Lorem Ipsum...</b> ${app.answers[4]}</div>
                 </div>
             `;
             list.appendChild(row);
         });
-    }
-
-    function sendEmail(email, name) {
-        const subject = encodeURIComponent("Black Silva | Your Model Application");
-        const body = encodeURIComponent(`Hello ${name},\n\nThank you for applying to the Black Silva Model Program. We have reviewed your photos and would like to invite you for a session...`);
-        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     }
 </script>
 </body>
