@@ -3,442 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Application System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Black Silva | Exclusive Model Call</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@200;300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin-bottom: 2rem;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #5568d3;
-        }
-        .btn-success {
-            background: #10b981;
-            color: white;
-        }
-        .btn-success:hover {
-            background: #059669;
-        }
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-        .btn-secondary {
-            background: #6b7280;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background: #4b5563;
-        }
-        .input-field {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-        .input-field:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        .badge-pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        .badge-approved {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        .nav {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .application-item {
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .application-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .application-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .info-label {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 0.25rem;
-        }
-        .info-value {
-            font-weight: 600;
-            color: #111827;
-        }
-        .booking-section {
-            background: #f9fafb;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-top: 1.5rem;
-        }
+        :root { --accent: #d4af37; --bg: #050505; --card: #0f0f0f; --text: #ffffff; --text-dim: #888; --border: #222; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        
+        header { padding: 40px 20px 20px; text-align: center; position: relative; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; letter-spacing: 10px; text-transform: uppercase; margin: 0; }
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+
+        .top-icons { position: absolute; top: 20px; right: 20px; display: flex; gap: 20px; }
+        .icon-btn { color: var(--accent); font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+        .icon-btn:hover { color: #fff; }
+
+        .video-wrapper { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:1px solid var(--border); margin-bottom: 40px; }
+        .video-wrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
+
+        .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); margin-bottom: 50px; }
+        .field { margin-bottom: 25px; }
+        label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
+        input[type="text"], input[type="email"], input[type="password"], select { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
+        
+        .check-field { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; cursor: pointer; }
+        .check-field input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+
+        .photo-grid { display: grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+        .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; cursor: pointer; color: var(--text-dim); }
+        .upload-box.done { border-color: var(--accent); color: var(--accent); }
+
+        .btn-submit { width: 100%; background: var(--text); color: #000; border: none; padding: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px; cursor: pointer; margin-top: 30px; }
+        .btn-submit.success { background: #28a745 !important; color: #fff; }
+
+        #admin-panel, #model-portal { display: none; padding: 60px 20px; background: #000; min-height: 100vh; position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 2000; overflow-y: auto; }
+        .app-row { background: var(--card); padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; border-left: 3px solid var(--accent); }
+        .admin-photo-display img { width: 100%; height: 120px; object-fit: cover; border: 1px solid #222; }
+        .admin-btn { background: var(--text); color: #000; border: none; padding: 8px 15px; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-right: 5px; margin-top: 10px; }
+        .btn-approve { background: var(--accent); }
+        .btn-delete { background: #600; color: #fff; }
+        
+        /* Added status badge styles */
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 0.65rem; letter-spacing: 1px; margin-left: 10px; }
+        .status-pending { background: #444; color: #ffa500; }
+        .status-approved { background: #1a4d2e; color: #4ade80; }
+
+        .haircut-preview { width: 100%; max-height: 400px; object-fit: cover; border: 1px solid var(--accent); margin: 20px 0; }
+        .booking-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
     </style>
 </head>
 <body>
+
+<div id="public-site">
+    <header>
+        <div class="top-icons">
+            <i class="fas fa-calendar-alt icon-btn" onclick="openPortal()" title="Model Login"></i>
+            <i class="fas fa-user-lock icon-btn" onclick="toggleAdmin()" title="Admin"></i>
+        </div>
+        <h1 class="logo">Black Silva</h1>
+    </header>
+
     <div class="container">
-        <!-- Navigation -->
-        <div class="nav">
-            <button class="btn btn-primary" onclick="showView('application')">Model Application</button>
-            <button class="btn btn-secondary" onclick="showView('admin')">Admin Console</button>
-            <button class="btn btn-secondary" onclick="showView('portal')">Model Portal</button>
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/Tic_zvXSeRU" frameborder="0" allowfullscreen></iframe>
         </div>
 
-        <!-- Application Form View -->
-        <div id="applicationView" class="card">
-            <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1.5rem; color: #111827;">Model Application Form</h1>
+        <div class="form-card">
+            <span style="text-align:center; display:block; color:var(--accent); letter-spacing:4px; font-size:0.75rem; margin-bottom:30px; font-weight:500;">APPLY TO BE A MUSE</span>
             <form id="applicationForm">
-                <input type="text" id="name" class="input-field" placeholder="Full Name" required>
-                <input type="email" id="email" class="input-field" placeholder="Email Address" required>
-                <input type="tel" id="phone" class="input-field" placeholder="Phone Number" required>
-                <input type="number" id="age" class="input-field" placeholder="Age" required min="18">
-                <input type="text" id="height" class="input-field" placeholder="Height (e.g., 5'8'')" required>
-                <input type="text" id="experience" class="input-field" placeholder="Years of Experience" required>
-                <textarea id="portfolio" class="input-field" placeholder="Portfolio URL or Description" rows="3"></textarea>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
+                <div class="field"><label>Full Name</label><input type="text" id="name" required></div>
+                <div class="field"><label>Email Address</label><input type="email" id="email" required></div>
+                
+                <div style="margin: 40px 0 20px; border-bottom: 1px solid var(--accent); padding-bottom: 10px;">
+                    <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--accent);">QUALIFYING QUESTIONS</span>
+                </div>
+                <label class="check-field"><input type="checkbox" required><span class="check-label">1. I agree to the transformation.</span></label>
+                <label class="check-field"><input type="checkbox" required><span class="check-label">2. I am available for the filming date.</span></label>
+                <label class="check-field"><input type="checkbox" required><span class="check-label">3. I allow the use of my image for social media.</span></label>
+                <label class="check-field"><input type="checkbox" required><span class="check-label">4. I am over 18 years old.</span></label>
+                <label class="check-field"><input type="checkbox" required><span class="check-label">5. I understand this is a professional model call.</span></label>
+
+                <div class="field">
+                    <label>Photos (Front / Side / Back)</label>
+                    <div class="photo-grid">
+                        <div class="upload-box" id="box_f" onclick="document.getElementById('f_img').click()">Front<input type="file" id="f_img" style="display:none" accept="image/*" onchange="previewFile('f')"></div>
+                        <div class="upload-box" id="box_s" onclick="document.getElementById('s_img').click()">Side<input type="file" id="s_img" style="display:none" accept="image/*" onchange="previewFile('s')"></div>
+                        <div class="upload-box" id="box_b" onclick="document.getElementById('b_img').click()">Back<input type="file" id="b_img" style="display:none" accept="image/*" onchange="previewFile('b')"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit" id="submitBtn">Submit Application</button>
             </form>
         </div>
+    </div>
+</div>
 
-        <!-- Admin Console View -->
-        <div id="adminView" class="card hidden">
-            <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1.5rem; color: #111827;">Admin Console</h1>
-            <div id="adminApplicationsList"></div>
+<div id="model-portal">
+    <div class="container">
+        <!-- Updated portal login to use email instead of password -->
+        <div id="portal-login">
+            <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">MODEL LOGIN</h2>
+            <p style="color:var(--text-dim); font-size:0.8rem;">Enter your email address to access your portal.</p>
+            <div class="field"><input type="email" id="portalEmail" placeholder="Enter your email"></div>
+            <button class="admin-btn btn-approve" onclick="checkAccess()">Enter Portal</button>
+            <button class="admin-btn" onclick="closeAll()">Cancel</button>
         </div>
 
-        <!-- Model Portal View -->
-        <div id="portalView" class="card hidden">
-            <div id="portalLogin">
-                <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1.5rem; color: #111827;">Model Portal Login</h1>
-                <form id="portalLoginForm">
-                    <input type="email" id="portalEmail" class="input-field" placeholder="Enter your email" required>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-                </form>
-            </div>
-
-            <div id="portalDashboard" class="hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h1 style="font-size: 2rem; font-weight: bold; color: #111827;">Welcome, <span id="modelName"></span>!</h1>
-                    <button class="btn btn-secondary" onclick="logoutPortal()">Logout</button>
+        <div id="portal-content" style="display:none;">
+            <h2 id="welcomeName" style="font-family: 'Cormorant Garamond'; letter-spacing: 3px;">MUSE PORTAL</h2>
+            <p style="color:var(--accent); font-size:0.75rem; letter-spacing:2px; margin-bottom:5px;">PLANNED DESIGN</p>
+            <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&q=80&w=800" class="haircut-preview">
+            
+            <div id="booking-section">
+                <label>Choose your preferred time</label>
+                <div class="booking-slots">
+                    <select id="selectedDate">
+                        <option value="Monday, Jan 26">Monday, Jan 26</option>
+                        <option value="Tuesday, Jan 27">Tuesday, Jan 27</option>
+                    </select>
+                    <select id="selectedTime">
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="01:00 PM">01:00 PM</option>
+                        <option value="04:00 PM">04:00 PM</option>
+                    </select>
                 </div>
-
-                <div id="modelInfo" style="background: #f9fafb; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;"></div>
-
-                <div class="booking-section">
-                    <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: #111827;">Book Your Appointment</h2>
-                    <form id="bookingForm">
-                        <input type="date" id="bookingDate" class="input-field" required>
-                        <input type="time" id="bookingTime" class="input-field" required>
-                        <textarea id="bookingNotes" class="input-field" placeholder="Additional notes (optional)" rows="3"></textarea>
-                        <button type="submit" class="btn btn-success" style="width: 100%;">Confirm Booking</button>
-                    </form>
-
-                    <div id="currentBooking" class="hidden" style="margin-top: 1.5rem; padding: 1rem; background: white; border-radius: 8px; border: 2px solid #10b981;">
-                        <h3 style="font-weight: bold; color: #10b981; margin-bottom: 0.5rem;">✓ Booking Confirmed</h3>
-                        <p id="bookingDetails"></p>
-                    </div>
-                </div>
+                <button class="btn-submit" onclick="confirmBooking()">Confirm Appointment</button>
             </div>
+            
+            <div id="booking-confirmed" style="display:none; text-align:center; padding: 40px 0;">
+                <i class="fas fa-check-circle" style="color:var(--accent); font-size: 3rem; margin-bottom: 20px;"></i>
+                <h3 style="letter-spacing:3px;">BOOKING CONFIRMED</h3>
+                <p id="displayBooking" style="color:var(--text-dim);"></p>
+            </div>
+            <br><button class="admin-btn" onclick="closeAll()">Logout</button>
         </div>
     </div>
+</div>
 
-    <script>
-        // Initialize localStorage
-        if (!localStorage.getItem('applications')) {
-            localStorage.setItem('applications', JSON.stringify([]));
+<div id="admin-panel">
+    <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+            <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">DASHBOARD</h2>
+            <button onclick="closeAll()" class="admin-btn">Close Panel</button>
+        </div>
+        <div id="applications-list"></div>
+    </div>
+</div>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
+    let currentPhotos = { f: null, s: null, b: null };
+    let currentUserEmail = null; // Track logged in user by email
+
+    function previewFile(type) {
+        const file = document.getElementById(type + '_img').files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            currentPhotos[type] = reader.result;
+            document.getElementById('box_' + type).classList.add('done');
+            document.getElementById('box_' + type).innerText = "FILE LOADED";
         }
+        if (file) reader.readAsDataURL(file);
+    }
 
-        let currentUser = null;
-
-        // View Management
-        function showView(view) {
-            document.getElementById('applicationView').classList.add('hidden');
-            document.getElementById('adminView').classList.add('hidden');
-            document.getElementById('portalView').classList.add('hidden');
-
-            if (view === 'application') {
-                document.getElementById('applicationView').classList.remove('hidden');
-            } else if (view === 'admin') {
-                document.getElementById('adminView').classList.remove('hidden');
-                loadAdminApplications();
-            } else if (view === 'portal') {
-                document.getElementById('portalView').classList.remove('hidden');
-                currentUser = null;
-                document.getElementById('portalLogin').classList.remove('hidden');
-                document.getElementById('portalDashboard').classList.add('hidden');
-            }
+    function toggleAdmin() {
+        const pass = prompt("Enter Admin Password:");
+        if(pass === "Alin1234.!") { 
+            document.getElementById('admin-panel').style.display = 'block';
+            loadApplications();
         }
+    }
 
-        // Application Form Submission
-        document.getElementById('applicationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    function openPortal() { document.getElementById('model-portal').style.display = 'block'; }
+    
+    function closeAll() { 
+        document.querySelectorAll('#admin-panel, #model-portal').forEach(el => el.style.display = 'none');
+        document.getElementById('portal-login').style.display = 'block';
+        document.getElementById('portal-content').style.display = 'none';
+        document.getElementById('portalEmail').value = "";
+        currentUserEmail = null; // Clear current user on logout
+    }
 
-            const application = {
-                id: Date.now().toString(),
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                age: document.getElementById('age').value,
-                height: document.getElementById('height').value,
-                experience: document.getElementById('experience').value,
-                portfolio: document.getElementById('portfolio').value,
-                status: 'pending',
-                submittedAt: new Date().toISOString(),
-                booking: null
-            };
+    document.getElementById('applicationForm').onsubmit = function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "UPLOADING...";
+        btn.disabled = true;
 
-            const applications = JSON.parse(localStorage.getItem('applications'));
-            applications.push(application);
-            localStorage.setItem('applications', JSON.stringify(applications));
+        const newApp = {
+            id: Date.now(),
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value.toLowerCase().trim(),
+            approved: false, // Start as not approved
+            booking: null,
+            photos: { ...currentPhotos },
+            date: new Date().toLocaleString()
+        };
 
-            alert('Application submitted successfully! You will be notified once approved.');
-            document.getElementById('applicationForm').reset();
-        });
+        db.push(newApp);
+        localStorage.setItem('bs_apps', JSON.stringify(db));
+        btn.innerText = "SUCCESS ✓";
+        btn.classList.add('success');
+        setTimeout(() => location.reload(), 1500);
+    };
 
-        // Admin Panel - Load Applications
-        function loadAdminApplications() {
-            const applications = JSON.parse(localStorage.getItem('applications'));
-            const container = document.getElementById('adminApplicationsList');
-
-            if (applications.length === 0) {
-                container.innerHTML = '<p style="color: #6b7280; text-align: center;">No applications yet.</p>';
-                return;
-            }
-
-            container.innerHTML = applications.map(app => `
-                <div class="application-item">
-                    <div class="application-header">
-                        <div>
-                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #111827;">${app.name}</h3>
-                            <span class="badge badge-${app.status === 'approved' ? 'approved' : 'pending'}">${app.status.toUpperCase()}</span>
-                        </div>
-                        <div class="application-actions">
-                            ${app.status === 'pending' ? `<button class="btn btn-success" onclick="approveApplication('${app.id}')">Approve</button>` : ''}
-                            <button class="btn btn-danger" onclick="deleteApplication('${app.id}')">Delete</button>
-                        </div>
+    function loadApplications() {
+        const list = document.getElementById('applications-list');
+        list.innerHTML = db.length ? "" : "<p style='color:#555;'>No applications yet.</p>";
+        [...db].reverse().forEach(app => {
+            const row = document.createElement('div');
+            row.className = 'app-row';
+            row.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <h3 style="margin:0; color:var(--accent);">${app.name}
+                            <span class="status-badge ${app.approved ? 'status-approved' : 'status-pending'}">
+                                ${app.approved ? '✓ APPROVED' : 'PENDING'}
+                            </span>
+                        </h3>
+                        <small style="color:#aaa;">${app.email} • Submitted: ${app.date}</small>
                     </div>
-
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Email</span>
-                            <span class="info-value">${app.email}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Phone</span>
-                            <span class="info-value">${app.phone}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Age</span>
-                            <span class="info-value">${app.age}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Height</span>
-                            <span class="info-value">${app.height}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Experience</span>
-                            <span class="info-value">${app.experience} years</span>
-                        </div>
-                    </div>
-
-                    ${app.portfolio ? `<div class="info-item" style="margin-top: 1rem;"><span class="info-label">Portfolio</span><span class="info-value">${app.portfolio}</span></div>` : ''}
-                    
-                    ${app.booking ? `
-                        <div style="margin-top: 1rem; padding: 1rem; background: #dcfce7; border-radius: 8px; border: 2px solid #10b981;">
-                            <strong style="color: #065f46;">Booking:</strong> ${new Date(app.booking.date).toLocaleDateString()} at ${app.booking.time}
-                            ${app.booking.notes ? `<br><span style="color: #065f46;">Notes: ${app.booking.notes}</span>` : ''}
-                        </div>
-                    ` : ''}
-
-                    <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #6b7280;">
-                        Submitted: ${new Date(app.submittedAt).toLocaleString()}
+                    <div>
+                        ${!app.approved ? `<button class="admin-btn btn-approve" onclick="approveApp(${app.id})">Approve</button>` : ''}
+                        <button class="admin-btn btn-delete" onclick="deleteApp(${app.id})">Delete</button>
                     </div>
                 </div>
-            `).join('');
-        }
+                
+                <div style="background:#000; padding:15px; margin:15px 0; border: 1px solid #222;">
+                    <strong>APPOINTMENT:</strong> ${app.booking ? `<span style="color:var(--accent)">${app.booking.day} @ ${app.booking.time}</span>` : 'Not yet selected'}
+                </div>
 
-        // Approve Application
-        function approveApplication(id) {
-            const applications = JSON.parse(localStorage.getItem('applications'));
-            const app = applications.find(a => a.id === id);
-            
-            if (app) {
-                app.status = 'approved';
-                localStorage.setItem('applications', JSON.stringify(applications));
-                loadAdminApplications();
-                alert(`${app.name} has been approved! They can now log in to the Model Portal.`);
-            }
-        }
-
-        // Delete Application
-        function deleteApplication(id) {
-            if (confirm('Are you sure you want to delete this application?')) {
-                const applications = JSON.parse(localStorage.getItem('applications'));
-                const filtered = applications.filter(a => a.id !== id);
-                localStorage.setItem('applications', JSON.stringify(filtered));
-                loadAdminApplications();
-            }
-        }
-
-        // Portal Login
-        document.getElementById('portalLoginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const email = document.getElementById('portalEmail').value;
-            const applications = JSON.parse(localStorage.getItem('applications'));
-            const user = applications.find(a => a.email === email);
-
-            if (!user) {
-                alert('No application found with this email. Please submit an application first.');
-                return;
-            }
-
-            if (user.status !== 'approved') {
-                alert('Your application is still pending approval. Please wait for admin confirmation.');
-                return;
-            }
-
-            // Login successful
-            currentUser = user;
-            document.getElementById('portalLogin').classList.add('hidden');
-            document.getElementById('portalDashboard').classList.remove('hidden');
-            loadPortalDashboard();
-        });
-
-        // Load Portal Dashboard
-        function loadPortalDashboard() {
-            document.getElementById('modelName').textContent = currentUser.name;
-            
-            document.getElementById('modelInfo').innerHTML = `
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Email</span>
-                        <span class="info-value">${currentUser.email}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Phone</span>
-                        <span class="info-value">${currentUser.phone}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Status</span>
-                        <span class="badge badge-approved">APPROVED</span>
-                    </div>
+                <div class="admin-photo-display" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
+                    <img src="${app.photos.f || 'https://via.placeholder.com/150?text=No+Front'}">
+                    <img src="${app.photos.s || 'https://via.placeholder.com/150?text=No+Side'}">
+                    <img src="${app.photos.b || 'https://via.placeholder.com/150?text=No+Back'}">
                 </div>
             `;
-
-            if (currentUser.booking) {
-                document.getElementById('bookingForm').classList.add('hidden');
-                document.getElementById('currentBooking').classList.remove('hidden');
-                document.getElementById('bookingDetails').innerHTML = `
-                    <strong>Date:</strong> ${new Date(currentUser.booking.date).toLocaleDateString()}<br>
-                    <strong>Time:</strong> ${currentUser.booking.time}<br>
-                    ${currentUser.booking.notes ? `<strong>Notes:</strong> ${currentUser.booking.notes}` : ''}
-                `;
-            } else {
-                document.getElementById('bookingForm').classList.remove('hidden');
-                document.getElementById('currentBooking').classList.add('hidden');
-            }
-        }
-
-        // Booking Form Submission
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const booking = {
-                date: document.getElementById('bookingDate').value,
-                time: document.getElementById('bookingTime').value,
-                notes: document.getElementById('bookingNotes').value
-            };
-
-            // Update in localStorage
-            const applications = JSON.parse(localStorage.getItem('applications'));
-            const app = applications.find(a => a.id === currentUser.id);
-            
-            if (app) {
-                app.booking = booking;
-                localStorage.setItem('applications', JSON.stringify(applications));
-                currentUser = app;
-                loadPortalDashboard();
-                alert('Booking confirmed successfully!');
-            }
+            list.appendChild(row);
         });
+    }
 
-        // Logout
-        function logoutPortal() {
-            currentUser = null;
-            document.getElementById('portalLogin').classList.remove('hidden');
-            document.getElementById('portalDashboard').classList.add('hidden');
-            document.getElementById('portalLoginForm').reset();
+    function approveApp(id) {
+        const app = db.find(a => a.id === id);
+        if(app && confirm(`Approve ${app.name}? They will be able to log in with their email: ${app.email}`)) {
+            app.approved = true;
+            localStorage.setItem('bs_apps', JSON.stringify(db));
+            loadApplications();
+            alert(`${app.name} has been approved! They can now log in using ${app.email}`);
+        }
+    }
+
+    function deleteApp(id) {
+        if(confirm("Permanently delete this application?")) {
+            db = db.filter(app => app.id !== id);
+            localStorage.setItem('bs_apps', JSON.stringify(db));
+            loadApplications();
+        }
+    }
+
+    function checkAccess() {
+        const emailInput = document.getElementById('portalEmail').value.toLowerCase().trim();
+
+        if (!emailInput) {
+            alert("Please enter your email address.");
+            return;
         }
 
-        // Set minimum date for booking to today
-        document.getElementById('bookingDate').min = new Date().toISOString().split('T')[0];
-    </script>
+        const user = db.find(app => app.email === emailInput);
+
+        if (!user) {
+            alert("No application found with this email. Please submit an application first.");
+            return;
+        }
+
+        if (!user.approved) {
+            alert("Your application is pending approval. Please wait for admin confirmation before accessing the portal.");
+            return;
+        }
+
+        currentUserEmail = emailInput;
+        document.getElementById('portal-login').style.display = 'none';
+        document.getElementById('portal-content').style.display = 'block';
+        document.getElementById('welcomeName').innerText = user.name;
+        
+        if (user.booking) {
+            showConfirmed(user.booking);
+        } else {
+            document.getElementById('booking-section').style.display = 'block';
+            document.getElementById('booking-confirmed').style.display = 'none';
+        }
+    }
+
+    function confirmBooking() {
+        const bookingData = {
+            day: document.getElementById('selectedDate').value,
+            time: document.getElementById('selectedTime').value
+        };
+        
+        const user = db.find(app => app.email === currentUserEmail);
+        if (user) {
+            user.booking = bookingData;
+            localStorage.setItem('bs_apps', JSON.stringify(db));
+            showConfirmed(bookingData);
+            alert("Booking confirmed! Your appointment has been saved.");
+        }
+    }
+
+    function showConfirmed(booking) {
+        document.getElementById('booking-section').style.display = 'none';
+        document.getElementById('booking-confirmed').style.display = 'block';
+        document.getElementById('displayBooking').innerText = `${booking.day} at ${booking.time}`;
+    }
+</script>
 </body>
 </html>
