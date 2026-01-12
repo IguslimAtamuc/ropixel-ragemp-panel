@@ -24,7 +24,7 @@
         .form-card { background: var(--card); padding: 40px; border-radius: 4px; border-top: 2px solid var(--accent); margin-bottom: 50px; }
         .field { margin-bottom: 25px; }
         label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim); }
-        input[type="text"], input[type="email"], select { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
+        input[type="text"], input[type="email"], input[type="password"], select { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 1rem; outline: none; }
         
         .check-field { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; cursor: pointer; }
         .check-field input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
@@ -96,14 +96,14 @@
     <div class="container">
         <div id="portal-login">
             <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">MODEL LOGIN</h2>
-            <p style="color:var(--text-dim); font-size:0.8rem;">Access your approved transformation and schedule.</p>
-            <div class="field"><input type="email" id="loginEmail" placeholder="your@email.com"></div>
+            <p style="color:var(--text-dim); font-size:0.8rem;">Please enter your access code to view transformation and schedule.</p>
+            <div class="field"><input type="password" id="portalPassword" placeholder="Enter Access Code"></div>
             <button class="admin-btn btn-approve" onclick="checkAccess()">Enter Portal</button>
             <button class="admin-btn" onclick="closeAll()">Cancel</button>
         </div>
 
         <div id="portal-content" style="display:none;">
-            <h2 id="welcomeName" style="font-family: 'Cormorant Garamond'; letter-spacing: 3px;"></h2>
+            <h2 id="welcomeName" style="font-family: 'Cormorant Garamond'; letter-spacing: 3px;">MUSE PORTAL</h2>
             <p style="color:var(--accent); font-size:0.75rem; letter-spacing:2px; margin-bottom:5px;">PLANNED DESIGN</p>
             <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&q=80&w=800" class="haircut-preview">
             
@@ -146,7 +146,6 @@
 <script>
     let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
     let currentPhotos = { f: null, s: null, b: null };
-    let activeUser = null;
 
     function previewFile(type) {
         const file = document.getElementById(type + '_img').files[0];
@@ -172,6 +171,7 @@
         document.querySelectorAll('#admin-panel, #model-portal').forEach(el => el.style.display = 'none');
         document.getElementById('portal-login').style.display = 'block';
         document.getElementById('portal-content').style.display = 'none';
+        document.getElementById('portalPassword').value = ""; // Clear password on close
     }
 
     document.getElementById('applicationForm').onsubmit = function(e) {
@@ -197,20 +197,6 @@
         setTimeout(() => location.reload(), 1500);
     };
 
-    function approveApp(id) {
-        db = db.map(app => app.id === id ? {...app, approved: true} : app);
-        localStorage.setItem('bs_apps', JSON.stringify(db));
-        loadApplications();
-    }
-
-    function deleteApp(id) {
-        if(confirm("Permanently delete this application?")) {
-            db = db.filter(app => app.id !== id);
-            localStorage.setItem('bs_apps', JSON.stringify(db));
-            loadApplications();
-        }
-    }
-
     function loadApplications() {
         const list = document.getElementById('applications-list');
         list.innerHTML = db.length ? "" : "<p style='color:#555;'>No applications yet.</p>";
@@ -222,12 +208,8 @@
                     <div>
                         <h3 style="margin:0; color:var(--accent);">${app.name}</h3>
                         <small style="color:#aaa;">${app.email} • Submitted: ${app.date}</small>
-                        <div style="margin-top:10px; font-weight:bold;">
-                            STATUS: ${app.approved ? '<span style="color:#28a745">APPROVED</span>' : '<span style="color:#d4af37">PENDING</span>'}
-                        </div>
                     </div>
                     <div>
-                        ${!app.approved ? `<button class="admin-btn btn-approve" onclick="approveApp(${app.id})">Approve</button>` : ''}
                         <button class="admin-btn btn-delete" onclick="deleteApp(${app.id})">Delete</button>
                     </div>
                 </div>
@@ -246,26 +228,27 @@
         });
     }
 
+    function deleteApp(id) {
+        if(confirm("Permanently delete this application?")) {
+            db = db.filter(app => app.id !== id);
+            localStorage.setItem('bs_apps', JSON.stringify(db));
+            loadApplications();
+        }
+    }
+
+    // NEW LOGIC: Access via password '1234'
     function checkAccess() {
-        const emailInput = document.getElementById('loginEmail').value.toLowerCase().trim();
-        const user = db.find(u => u.email === emailInput);
+        const passInput = document.getElementById('portalPassword').value;
 
-        if (!user) {
-            alert("Email not found. Please apply first.");
-            return;
-        }
-        if (!user.approved) {
-            alert("Your application is still under review. Check back soon!");
-            return;
-        }
-
-        activeUser = user;
-        document.getElementById('portal-login').style.display = 'none';
-        document.getElementById('portal-content').style.display = 'block';
-        document.getElementById('welcomeName').innerText = "MUSE: " + user.name.toUpperCase();
-        
-        if (user.booking) {
-            showConfirmed(user.booking);
+        if (passInput === "1234") {
+            document.getElementById('portal-login').style.display = 'none';
+            document.getElementById('portal-content').style.display = 'block';
+            
+            // Note: Since we aren't using email to login anymore, 
+            // the portal is general. If you want it to remember 
+            // a specific model's booking, you would still need an email field.
+        } else {
+            alert("Incorrect access code. Please try again.");
         }
     }
 
@@ -275,9 +258,9 @@
             time: document.getElementById('selectedTime').value
         };
         
-        db = db.map(u => u.email === activeUser.email ? {...u, booking: bookingData} : u);
-        localStorage.setItem('bs_apps', JSON.stringify(db));
+        // Since login is now general, we show confirmation locally
         showConfirmed(bookingData);
+        alert("Thank you! Your selection has been recorded.");
     }
 
     function showConfirmed(booking) {
