@@ -29,7 +29,7 @@
         .check-field { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; cursor: pointer; }
         .check-field input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
 
-        .photo-grid { display: grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .upload-box { border: 1px solid var(--border); padding: 15px 5px; text-align: center; font-size: 0.6rem; cursor: pointer; color: var(--text-dim); }
         .upload-box.done { border-color: var(--accent); color: var(--accent); }
 
@@ -43,12 +43,11 @@
         .btn-approve { background: var(--accent); }
         .btn-delete { background: #600; color: #fff; }
         
-        /* Added status badge styles */
         .status-badge { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 0.65rem; letter-spacing: 1px; margin-left: 10px; }
         .status-pending { background: #444; color: #ffa500; }
         .status-approved { background: #1a4d2e; color: #4ade80; }
 
-        .haircut-preview { width: 100%; max-height: 400px; object-fit: cover; border: 1px solid var(--accent); margin: 20px 0; }
+        .haircut-preview-container { width: 100%; margin: 20px 0; border: 1px solid var(--accent); overflow: hidden; }
         .booking-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
     </style>
 </head>
@@ -99,7 +98,6 @@
 
 <div id="model-portal">
     <div class="container">
-        <!-- Updated portal login to use email instead of password -->
         <div id="portal-login">
             <h2 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px;">MODEL LOGIN</h2>
             <p style="color:var(--text-dim); font-size:0.8rem;">Enter your email address to access your portal.</p>
@@ -109,9 +107,12 @@
         </div>
 
         <div id="portal-content" style="display:none;">
-            <h2 id="welcomeName" style="font-family: 'Cormorant Garamond'; letter-spacing: 3px;">MUSE PORTAL</h2>
+            <h2 id="welcomeName" style="font-family: 'Cormorant Garamond'; letter-spacing: 3px; text-transform: uppercase;"></h2>
             <p style="color:var(--accent); font-size:0.75rem; letter-spacing:2px; margin-bottom:5px;">PLANNED DESIGN</p>
-            <blockquote class="imgur-embed-pub" lang="en" data-id="a/S4kE0kx" data-context="false" ><a href="//imgur.com/a/S4kE0kx"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+            
+            <div class="haircut-preview-container">
+                <blockquote class="imgur-embed-pub" lang="en" data-id="a/S4kE0kx" data-context="false"><a href="//imgur.com/a/S4kE0kx"></a></blockquote>
+            </div>
             
             <div id="booking-section">
                 <label>Choose your preferred time</label>
@@ -149,10 +150,12 @@
     </div>
 </div>
 
+<script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
 <script>
     let db = JSON.parse(localStorage.getItem('bs_apps')) || [];
     let currentPhotos = { f: null, s: null, b: null };
-    let currentUserEmail = null; // Track logged in user by email
+    let currentUserEmail = null;
 
     function previewFile(type) {
         const file = document.getElementById(type + '_img').files[0];
@@ -180,7 +183,7 @@
         document.getElementById('portal-login').style.display = 'block';
         document.getElementById('portal-content').style.display = 'none';
         document.getElementById('portalEmail').value = "";
-        currentUserEmail = null; // Clear current user on logout
+        currentUserEmail = null;
     }
 
     document.getElementById('applicationForm').onsubmit = function(e) {
@@ -193,7 +196,7 @@
             id: Date.now(),
             name: document.getElementById('name').value,
             email: document.getElementById('email').value.toLowerCase().trim(),
-            approved: false, // Start as not approved
+            approved: false,
             booking: null,
             photos: { ...currentPhotos },
             date: new Date().toLocaleString()
@@ -244,11 +247,10 @@
 
     function approveApp(id) {
         const app = db.find(a => a.id === id);
-        if(app && confirm(`Approve ${app.name}? They will be able to log in with their email: ${app.email}`)) {
+        if(app && confirm(`Approve ${app.name}?`)) {
             app.approved = true;
             localStorage.setItem('bs_apps', JSON.stringify(db));
             loadApplications();
-            alert(`${app.name} has been approved! They can now log in using ${app.email}`);
         }
     }
 
@@ -262,28 +264,15 @@
 
     function checkAccess() {
         const emailInput = document.getElementById('portalEmail').value.toLowerCase().trim();
-
-        if (!emailInput) {
-            alert("Please enter your email address.");
-            return;
-        }
-
         const user = db.find(app => app.email === emailInput);
 
-        if (!user) {
-            alert("No application found with this email. Please submit an application first.");
-            return;
-        }
-
-        if (!user.approved) {
-            alert("Your application is pending approval. Please wait for admin confirmation before accessing the portal.");
-            return;
-        }
+        if (!user) { alert("No application found with this email."); return; }
+        if (!user.approved) { alert("Application pending approval."); return; }
 
         currentUserEmail = emailInput;
         document.getElementById('portal-login').style.display = 'none';
         document.getElementById('portal-content').style.display = 'block';
-        document.getElementById('welcomeName').innerText = user.name;
+        document.getElementById('welcomeName').innerText = "MUSE: " + user.name;
         
         if (user.booking) {
             showConfirmed(user.booking);
@@ -298,13 +287,11 @@
             day: document.getElementById('selectedDate').value,
             time: document.getElementById('selectedTime').value
         };
-        
         const user = db.find(app => app.email === currentUserEmail);
         if (user) {
             user.booking = bookingData;
             localStorage.setItem('bs_apps', JSON.stringify(db));
             showConfirmed(bookingData);
-            alert("Booking confirmed! Your appointment has been saved.");
         }
     }
 
