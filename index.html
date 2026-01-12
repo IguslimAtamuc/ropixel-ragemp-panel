@@ -47,29 +47,16 @@
         .status-pending { background: #444; color: #ffa500; }
         .status-approved { background: #1a4d2e; color: #4ade80; }
 
-        /* Design Placeholder Styles */
+        /* Instagram Preview Styles */
         .haircut-preview-container { 
             width: 100%; 
-            aspect-ratio: 16/9; 
+            min-height: 450px;
             border: 1px solid var(--border); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            position: relative;
-            background: #0a0a0a;
+            background: #000;
             margin: 20px 0;
             overflow: hidden;
+            border-radius: 8px;
         }
-        #design-display-img { width: 100%; height: 100%; object-fit: contain; display: none; }
-        .design-add-btn { 
-            font-size: 2rem; 
-            color: var(--accent); 
-            cursor: pointer; 
-            border: 1px dashed var(--accent);
-            padding: 20px 40px;
-            transition: 0.3s;
-        }
-        .design-add-btn:hover { background: rgba(212, 175, 55, 0.1); }
 
         .booking-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
     </style>
@@ -134,9 +121,15 @@
             <p style="color:var(--accent); font-size:0.75rem; letter-spacing:2px; margin-bottom:5px;">PLANNED DESIGN</p>
             
             <div class="haircut-preview-container" id="design-container">
-                <img id="design-display-img" src="" alt="Planned Design">
-                <div class="design-add-btn" id="design-plus-icon" onclick="adminUploadDesign()">+</div>
-                <input type="file" id="design-upload-input" style="display:none" accept="image/*" onchange="processDesignUpload(this)">
+                <iframe 
+                    src="https://www.instagram.com/p/DP9REmXgoY5/embed" 
+                    width="100%" 
+                    height="500" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    allowtransparency="true" 
+                    allow="encrypted-media">
+                </iframe>
             </div>
             
             <div id="booking-section">
@@ -191,48 +184,6 @@
         if (file) reader.readAsDataURL(file);
     }
 
-    // Logic for Planned Design Upload
-    function adminUploadDesign() {
-        const pass = prompt("Enter Admin Password to upload design:");
-        if(pass === "Alin1234.!") {
-            document.getElementById('design-upload-input').click();
-        } else if (pass !== null) {
-            alert("Incorrect password.");
-        }
-    }
-
-    function processDesignUpload(input) {
-        const file = input.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const user = db.find(app => app.email === currentUserEmail);
-            if (user) {
-                user.plannedDesign = e.target.result; // Save to specific user
-                localStorage.setItem('bs_apps', JSON.stringify(db));
-                displayDesign(user.plannedDesign);
-            }
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function displayDesign(imgData) {
-        const imgEl = document.getElementById('design-display-img');
-        const plusEl = document.getElementById('design-plus-icon');
-        if (imgData) {
-            imgEl.src = imgData;
-            imgEl.style.display = 'block';
-            plusEl.style.display = 'none';
-            // Allow admin to change it by clicking the image
-            imgEl.onclick = adminUploadDesign;
-            imgEl.style.cursor = 'pointer';
-        } else {
-            imgEl.style.display = 'none';
-            plusEl.style.display = 'flex';
-        }
-    }
-
     function toggleAdmin() {
         const pass = prompt("Enter Admin Password:");
         if(pass === "Alin1234.!") { 
@@ -263,7 +214,6 @@
             email: document.getElementById('email').value.toLowerCase().trim(),
             approved: false,
             booking: null,
-            plannedDesign: null, // New field
             photos: { ...currentPhotos },
             date: new Date().toLocaleString()
         };
@@ -340,8 +290,6 @@
         document.getElementById('portal-content').style.display = 'block';
         document.getElementById('welcomeName').innerText = "MUSE: " + user.name;
         
-        displayDesign(user.plannedDesign); // Load the specific design for this model
-
         if (user.booking) {
             showConfirmed(user.booking);
         } else {
