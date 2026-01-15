@@ -1,241 +1,108 @@
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookScroll - Înțelepciune Zilnică</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Efectul de scroll tip Instagram */
+        .scroll-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+        .card {
+            scroll-snap-align: start;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div class="scroll-container" id="feed">
+    </div>
 
 <script>
-    // 1. PROJECT CONFIG (Get these from your Firebase Console)
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-        projectId: "YOUR_PROJECT",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // Application State
-    let db = [];
-    let globalDesign = null;
-    let globalDesc = "";
-    let availDates = [];
-    let availTimes = [];
-    let currentPhotos = { f: null, s: null, b: null };
-    let currentUserEmail = null;
-
-    // 2. LIVE SYNC (The Fix)
-    // This looks at the database instead of your computer's local memory
-    database.ref('/').on('value', (snapshot) => {
-        const data = snapshot.val() || {};
-        
-        // Map cloud data to your variables
-        db = data.bs_apps ? Object.values(data.bs_apps) : [];
-        globalDesign = data.bs_global_design || null;
-        globalDesc = data.bs_global_desc || "";
-        availDates = data.bs_dates || ["Monday, Jan 26", "Tuesday, Jan 27"];
-        availTimes = data.bs_times || ["09:00 AM", "01:00 PM", "04:00 PM"];
-        
-        updateDesignDisplays();
-        
-        // Refresh the list if Admin Panel is open
-        if(document.getElementById('admin-panel').style.display === 'block') {
-            loadApplications();
+    // Aici adaugi tu ideile tale din cărți
+    const db = [
+        {
+            idee: "Nu te ridici la nivelul obiectivelor tale, ci cobori la nivelul sistemelor tale.",
+            carte: "Atomic Habits",
+            autor: "James Clear",
+            culoare: "bg-orange-600"
+        },
+        {
+            idee: "Capacitatea de a te concentra fără distragere este super-puterea secolului XXI.",
+            carte: "Deep Work",
+            autor: "Cal Newport",
+            culoare: "bg-blue-800"
+        },
+        {
+            idee: "Esențialismul nu înseamnă să faci mai multe, ci să faci lucrurile corecte.",
+            carte: "Essentialism",
+            autor: "Greg McKeown",
+            culoare: "bg-purple-700"
+        },
+        {
+            idee: "Obstacolul este calea. Ceea ce stă în drum devine drumul.",
+            carte: "The Obstacle is the Way",
+            autor: "Ryan Holiday",
+            culoare: "bg-stone-800"
+        },
+        {
+            idee: "Banii sunt un instrument, nu scopul final. Libertatea este adevărata bogăție.",
+            carte: "The Psychology of Money",
+            autor: "Morgan Housel",
+            culoare: "bg-emerald-700"
         }
-        
-        // Keep Admin inputs synced
-        if(document.activeElement !== document.getElementById('admin-design-desc')) {
-            document.getElementById('admin-design-desc').value = globalDesc;
-        }
-        document.getElementById('admin-dates').value = availDates.join('\n');
-        document.getElementById('admin-times').value = availTimes.join('\n');
+    ];
+
+    // Funcție pentru a amesteca cardurile zilnic (bazat pe dată)
+    function getDailySeed() {
+        const today = new Date();
+        return today.getDate() + today.getMonth() + today.getFullYear();
+    }
+
+    function shuffle(array) {
+        let seed = getDailySeed();
+        return array.sort(() => (seed % 3 === 0 ? 0.5 - Math.random() : -0.5 + Math.random()));
+    }
+
+    const feed = document.getElementById('feed');
+
+    // Generăm vizual cardurile
+    shuffle(db).forEach(item => {
+        const card = document.createElement('div');
+        card.className = `card ${item.culoare}`;
+        card.innerHTML = `
+            <div class="max-w-md animate-fade-in-up">
+                <span class="text-sm uppercase tracking-widest opacity-70 mb-4 block">Ideea zilei</span>
+                <h1 class="text-3xl md:text-4xl font-bold leading-tight mb-8">"${item.idee}"</h1>
+                <div class="h-1 w-12 bg-white mx-auto mb-6 opacity-50"></div>
+                <p class="text-xl font-medium">${item.carte}</p>
+                <p class="text-sm opacity-80">${item.autor}</p>
+            </div>
+            <div class="absolute bottom-10 animate-bounce opacity-40">
+                <p class="text-xs">Scroll pentru următoarea idee</p>
+            </div>
+        `;
+        feed.appendChild(card);
     });
-
-    // 3. UPDATED CORE FUNCTIONS (Now saving to Cloud)
-    function saveCalendarSettings() {
-        const datesInput = document.getElementById('admin-dates').value.split('\n').filter(x => x.trim() !== "");
-        const timesInput = document.getElementById('admin-times').value.split('\n').filter(x => x.trim() !== "");
-        database.ref('bs_dates').set(datesInput);
-        database.ref('bs_times').set(timesInput);
-        alert("Calendar slots updated for all models!");
-    }
-
-    function saveGlobalDescription() {
-        const desc = document.getElementById('admin-design-desc').value;
-        database.ref('bs_global_desc').set(desc);
-        alert("Description synced!");
-    }
-
-    function handleGlobalDesignUpload(input) {
-        const file = input.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            database.ref('bs_global_design').set(e.target.result);
-        };
-        reader.readAsDataURL(file);
-    }
-
-    document.getElementById('applicationForm').onsubmit = function(e) {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        const appId = Date.now();
-        const newApp = {
-            id: appId,
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value.toLowerCase().trim(),
-            approved: false,
-            rejected: false,
-            booking: null,
-            photos: { ...currentPhotos },
-            date: new Date().toLocaleString()
-        };
-        
-        database.ref('bs_apps/' + appId).set(newApp).then(() => {
-            btn.innerText = "SUCCESS ✓";
-            btn.classList.add('success');
-            setTimeout(() => location.reload(), 1500);
-        });
-    };
-
-    function approveApp(id) {
-        database.ref('bs_apps/' + id).update({ approved: true, rejected: false });
-    }
-
-    function rejectApp(id) {
-        database.ref('bs_apps/' + id).update({ approved: false, rejected: true });
-    }
-
-    function deleteApp(id) {
-        if(confirm("Permanently delete this application?")) {
-            database.ref('bs_apps/' + id).remove();
-        }
-    }
-
-    function confirmBooking() {
-        const user = db.find(app => app.email === currentUserEmail);
-        const bookingData = { 
-            day: document.getElementById('selectedDate').value, 
-            time: document.getElementById('selectedTime').value 
-        };
-        database.ref('bs_apps/' + user.id).update({ booking: bookingData }).then(() => {
-            showConfirmed(bookingData);
-            alert("Appointment Confirmed!");
-        });
-    }
-
-    // --- YOUR ORIGINAL UI FUNCTIONS (Structure Unchanged) ---
-    function updateDesignDisplays() {
-        const pImg = document.getElementById('portal-design-img');
-        const pMsg = document.getElementById('no-design-portal');
-        const aImg = document.getElementById('admin-design-preview');
-        const aMsg = document.getElementById('no-design-admin');
-        const pDesc = document.getElementById('portal-design-desc');
-
-        if (globalDesign) {
-            pImg.src = globalDesign; pImg.style.display = 'block'; pMsg.style.display = 'none';
-            aImg.src = globalDesign; aImg.style.display = 'block'; aMsg.style.display = 'none';
-        }
-        if (globalDesc.trim() !== "") {
-            pDesc.innerText = globalDesc; pDesc.style.display = 'block';
-        } else {
-            pDesc.style.display = 'none';
-        }
-    }
-
-    function toggleAdmin() {
-        const pass = prompt("Enter Admin Password:");
-        if(pass === "Alin1234.!") { 
-            document.getElementById('admin-panel').style.display = 'block';
-            loadApplications();
-        }
-    }
-
-    function openPortal() { document.getElementById('model-portal').style.display = 'block'; }
-    
-    function closeAll() { 
-        document.querySelectorAll('#admin-panel, #model-portal').forEach(el => el.style.display = 'none');
-        document.getElementById('portal-login').style.display = 'block';
-        document.getElementById('portal-content').style.display = 'none';
-    }
-
-    function previewFile(type) {
-        const file = document.getElementById(type + '_img').files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            currentPhotos[type] = reader.result;
-            document.getElementById('box_' + type).classList.add('done');
-            document.getElementById('box_' + type).innerText = "LOADED";
-        }
-        if (file) reader.readAsDataURL(file);
-    }
-
-    function loadApplications() {
-        const list = document.getElementById('applications-list');
-        list.innerHTML = "";
-        [...db].sort((a,b) => b.id - a.id).forEach(app => {
-            const row = document.createElement('div');
-            row.className = 'app-row';
-            row.innerHTML = `
-                <div style="display:flex; justify-content:space-between;">
-                    <div>
-                        <h3 style="margin:0;">${app.name} 
-                            <span class="status-badge ${app.approved ? 'status-approved' : (app.rejected ? 'status-rejected' : 'status-pending')}">
-                                ${app.approved ? 'APPROVED' : (app.rejected ? 'NOT APPROVED' : 'PENDING')}
-                            </span>
-                        </h3>
-                        <small>${app.email}</small>
-                        ${app.booking ? `<div style="color:var(--accent); font-weight:bold; font-size:0.7rem; margin-top:5px;">Booked: ${app.booking.day} @ ${app.booking.time}</div>` : ''}
-                    </div>
-                    <div>
-                        <button class="admin-btn btn-approve" onclick="approveApp(${app.id})">Approve</button>
-                        <button class="admin-btn btn-reject" onclick="rejectApp(${app.id})">Reject</button>
-                        <button class="admin-btn btn-delete" onclick="deleteApp(${app.id})">Delete</button>
-                    </div>
-                </div>
-            `;
-            list.appendChild(row);
-        });
-    }
-
-    function checkAccess() {
-        const emailInput = document.getElementById('portalEmail').value.toLowerCase().trim();
-        const user = db.find(app => app.email === emailInput);
-        if (!user) { alert("Email not found."); return; }
-
-        currentUserEmail = emailInput;
-        document.getElementById('portal-login').style.display = 'none';
-        document.getElementById('portal-content').style.display = 'block';
-        document.getElementById('welcomeName').innerText = "MODEL: " + user.name;
-        
-        const dateSelect = document.getElementById('selectedDate');
-        const timeSelect = document.getElementById('selectedTime');
-        dateSelect.innerHTML = availDates.map(d => `<option value="${d}">${d}</option>`).join('');
-        timeSelect.innerHTML = availTimes.map(t => `<option value="${t}">${t}</option>`).join('');
-
-        const booking = document.getElementById('booking-section');
-        const pending = document.getElementById('pending-notice');
-        const approved = document.getElementById('approved-notice');
-        const rejected = document.getElementById('rejected-notice');
-
-        [booking, pending, approved, rejected].forEach(el => el.style.display = 'none');
-
-        if (user.approved) {
-            approved.style.display = 'block';
-            if (user.booking) { showConfirmed(user.booking); } 
-            else { booking.style.display = 'block'; }
-        } else if (user.rejected) {
-            rejected.style.display = 'block';
-        } else {
-            pending.style.display = 'block';
-        }
-    }
-
-    function showConfirmed(b) {
-        document.getElementById('booking-section').style.display = 'none';
-        document.getElementById('booking-confirmed').style.display = 'block';
-        document.getElementById('displayBooking').innerText = `${b.day} at ${b.time}`;
-    }
 </script>
+
+</body>
+</html>
